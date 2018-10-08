@@ -1,0 +1,123 @@
+# (C) 2008-2017 Potsdam Institute for Climate Impact Research (PIK),
+# authors, and contributors see AUTHORS file
+# This file is part of MAgPIE and licensed under GNU AGPL Version 3
+# or later. See LICENSE file or go to http://www.gnu.org/licenses/
+# Contact: magpie@pik-potsdam.de
+
+
+######################################
+#### Script to start a MAgPIE run ####
+######################################
+
+library(lucode)
+library(magclass)
+
+source("config/default.cfg")
+source("scripts/start_functions.R")
+
+cfg$recalibrate <- FALSE
+
+# cfg$title <- "SSP2_BASE"
+# cfg <- setScenario(cfg,c("SSP2","BASE"))
+# start_run(cfg,codeCheck=FALSE)
+
+# cfg$title <- "SSP2_NPI"
+# cfg <- setScenario(cfg,c("SSP2","NPI"))
+# start_run(cfg,codeCheck=FALSE)
+
+# cfg$title <- "SSP2_NDC"
+# cfg <- setScenario(cfg,c("SSP2","NDC"))
+# start_run(cfg,codeCheck=FALSE)
+
+### Runs with CC
+
+#CC
+cfg$gms$c14_yields_scenario  <- "cc"
+cfg$gms$c42_watdem_scenario  <- "cc"
+cfg$gms$c43_watavail_scenario  <- "cc"
+cfg$gms$c52_carbon_scenario  <- "cc"
+
+res <- "c200"
+
+##SSP2
+cfg$title <- paste("SSP2_Ref_RCP60_co2_BASE",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","BASE"))
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp6p0-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- paste("SSP2_Ref_RCP60_co2_NPI",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","NPI"))
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp6p0-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- paste("SSP2_Ref_RCP60_co2_NDC",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","NDC"))
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp6p0-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+## policy 
+
+cfg$title <- paste("SSP2_Pol_RCP60_co2_BASE",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","BASE"))
+cfg$gms$c56_pollutant_prices <- "SSP2-Ref-SPA0-V15-REMIND-MAGPIE"
+cfg$gms$c60_2ndgen_biodem <- "SSP2-Ref-SPA0"
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp6p0-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- paste("SSP2_Pol_RCP60_co2_NPI",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","NPI"))
+cfg$gms$c56_pollutant_prices <- "SSP2-Ref-SPA0-V15-REMIND-MAGPIE"
+cfg$gms$c60_2ndgen_biodem <- "SSP2-Ref-SPA0"
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp6p0-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- paste("SSP2_Pol_RCP60_co2_NDC",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","NDC"))
+cfg$gms$c56_pollutant_prices <- "SSP2-Ref-SPA0-V15-REMIND-MAGPIE"
+cfg$gms$c60_2ndgen_biodem <- "SSP2-Ref-SPA0"
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp6p0-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+## rcp26
+
+cfg$title <- paste("SSP2_Ref_RCP26_co2_BASE",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","BASE"))
+cfg$gms$c56_pollutant_prices <- "SSP2-Ref-SPA0-V15-REMIND-MAGPIE"
+cfg$gms$c60_2ndgen_biodem <- "SSP2-Ref-SPA0"
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp2p6-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- paste("SSP2_Ref_RCP26_co2_NPI",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","NPI"))
+cfg$gms$c56_pollutant_prices <- "SSP2-Ref-SPA0-V15-REMIND-MAGPIE"
+cfg$gms$c60_2ndgen_biodem <- "SSP2-Ref-SPA0"
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp2p6-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- paste("SSP2_Ref_RCP26_co2_NDC",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","NDC"))
+cfg$gms$c56_pollutant_prices <- "SSP2-Ref-SPA0-V15-REMIND-MAGPIE"
+cfg$gms$c60_2ndgen_biodem <- "SSP2-Ref-SPA0"
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp2p6-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- paste("SSP2_Pol_RCP26_co2_BASE",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","BASE"))
+cfg$gms$c56_pollutant_prices <- "SSP2-26-SPA2-V15-REMIND-MAGPIE"
+cfg$gms$c60_2ndgen_biodem <- "SSP2-26-SPA2"
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp2p6-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- paste("SSP2_Pol_RCP26_co2_NPI",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","NPI"))
+cfg$gms$c56_pollutant_prices <- "SSP2-26-SPA2-V15-REMIND-MAGPIE"
+cfg$gms$c60_2ndgen_biodem <- "SSP2-26-SPA2"
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp2p6-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- paste("SSP2_Pol_RCP26_co2_NDC",res,sep="_")
+cfg <- setScenario(cfg,c("SSP2","NDC"))
+cfg$gms$c56_pollutant_prices <- "SSP2-26-SPA2-V15-REMIND-MAGPIE"
+cfg$gms$c60_2ndgen_biodem <- "SSP2-26-SPA2"
+cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp2p6-co2_rev34_",res,"_690d3718e151be1b450b394c1064b1c5.tgz")
+start_run(cfg,codeCheck=FALSE)
