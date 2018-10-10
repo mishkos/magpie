@@ -22,4 +22,5 @@
 
 *###################### R SECTION START (MODULETYPES) ##########################
 $Ifi "%tc%" == "endo_jun18" $include "./modules/13_tc/endo_jun18.gms"
+$Ifi "%tc%" == "exo_oct18" $include "./modules/13_tc/exo_oct18.gms"
 *###################### R SECTION END (MODULETYPES) ############################
