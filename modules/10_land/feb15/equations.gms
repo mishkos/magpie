@@ -8,7 +8,7 @@
 *' This realization defines the total amount of land to be constant over time.
 
  q10_land(j2) ..
-		sum(land, vm_land(j2,land)) =e= sum(land, pcm_land(j2,land));
+		sum(land, vm_land(j2,land)) =e= sum(land, pm_land_start(j2,land));
 
 *' The value of land areas of previous time step are passed on to the interface
 *' holding the areas of the different land types.
