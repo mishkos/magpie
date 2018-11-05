@@ -15,39 +15,69 @@ library(magclass)
 source("config/default.cfg")
 source("scripts/start_functions.R")
 
+cfg$input[1] <- "isimip_rcp-IPSL_CM5A_LR-rcp2p6-co2_rev34_c200_8a828c6ed5004e77d1ba2025e8ea2261.tgz"
+cfg$input[2] <- "rev4.14_8a828c6ed5004e77d1ba2025e8ea2261_magpie.tgz"
+cfg$input[3] <- "rev4.14_8a828c6ed5004e77d1ba2025e8ea2261_validation.tgz"
+cfg$input[4] <- "additional_data_rev3.59.tgz"
+cfg$input[5] <- "calibration_H11_NPI_14_biocorrect_05Nov18.tgz"
+
+cfg$results_folder <- "output/tcyld/:title::date:"
+
+cfg$gms$s80_maxiter <- 1
+cfg$output <- c("report")
+
+cfg$gms$yields <- "biocorrect"
+
 cfg$recalibrate <- FALSE
 
 # cfg$title <- "SSP2_BASE"
 # cfg <- setScenario(cfg,c("SSP2","BASE"))
 # start_run(cfg,codeCheck=FALSE)
-
+#
 # cfg$title <- "SSP2_NPI"
 # cfg <- setScenario(cfg,c("SSP2","NPI"))
 # start_run(cfg,codeCheck=FALSE)
-
+# # submitCalibration("H11_NPI_14_biocorrect")
+#
 # cfg$title <- "SSP2_NDC"
 # cfg <- setScenario(cfg,c("SSP2","NDC"))
 # start_run(cfg,codeCheck=FALSE)
 
+### Trade test runs
+
+# cfg$title <- "BASE_regtr"
+# cfg <- setScenario(cfg,c("SSP2","BASE"))
+# cfg$gms$c21_trade_liberalization  <- "regionalized"
+# start_run(cfg,codeCheck=FALSE)
+#
+# cfg$title <- "NPI_regtr"
+# cfg <- setScenario(cfg,c("SSP2","NPI"))
+# cfg$gms$c21_trade_liberalization  <- "regionalized"
+# start_run(cfg,codeCheck=FALSE)
+#
+# cfg$title <- "NDC_regtr"
+# cfg <- setScenario(cfg,c("SSP2","NDC"))
+# cfg$gms$c21_trade_liberalization  <- "regionalized"
+# start_run(cfg,codeCheck=FALSE)
 
 ### Runs with exo TC
 
-cfg$title <- "NPI_exotc_base"
+cfg$title <- "NPI_exotc_base_iterate"
 cfg <- setScenario(cfg,c("SSP2","NPI"))
 cfg$gms$tc <- "exo_oct18"
-c13_tau_scen <- "base"
+cfg$gms$c13_tau_scen <- "base"
 start_run(cfg,codeCheck=FALSE)
 
-cfg$title <- "NDC_exotc_base"
+cfg$title <- "NDC_exotc_base_iterate"
 cfg <- setScenario(cfg,c("SSP2","NDC"))
 cfg$gms$tc <- "exo_oct18"
-c13_tau_scen <- "base"
+cfg$gms$c13_tau_scen <- "base"
 start_run(cfg,codeCheck=FALSE)
 
-cfg$title <- "NDC_exotc_npi"
+cfg$title <- "NDC_exotc_npi_iterate"
 cfg <- setScenario(cfg,c("SSP2","NDC"))
 cfg$gms$tc <- "exo_oct18"
-c13_tau_scen <- "npi"
+cfg$gms$c13_tau_scen <- "npi"
 start_run(cfg,codeCheck=FALSE)
 
 
