@@ -50,6 +50,23 @@ cfg$recalibrate <- FALSE
 # cfg <- setScenario(cfg,c("SSP2","NDC"))
 # start_run(cfg,codeCheck=FALSE)
 
+# regionalized trade runs
+
+# cfg$title <- "BASE_regtr"
+# cfg <- setScenario(cfg,c("SSP2","BASE"))
+# cfg$gms$c21_trade_liberalization  <- "regionalized"
+# start_run(cfg,codeCheck=FALSE)
+#
+# cfg$title <- "NPI_regtr"
+# cfg <- setScenario(cfg,c("SSP2","NPI"))
+# cfg$gms$c21_trade_liberalization  <- "regionalized"
+# start_run(cfg,codeCheck=FALSE)
+#
+# cfg$title <- "NDC_regtr"
+# cfg <- setScenario(cfg,c("SSP2","NDC"))
+# cfg$gms$c21_trade_liberalization  <- "regionalized"
+# start_run(cfg,codeCheck=FALSE)
+
 ### Runs with exo TC
 
 cfg$title <- "BASE_exotc_base_bc"
