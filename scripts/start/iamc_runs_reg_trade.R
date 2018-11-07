@@ -37,64 +37,87 @@ cfg$gms$yields <- "biocorrect"
 
 cfg$recalibrate <- FALSE
 
-# cfg$title <- "SSP2_BASE"
-# cfg <- setScenario(cfg,c("SSP2","BASE"))
-# start_run(cfg,codeCheck=FALSE)
-#
-# cfg$title <- "SSP2_NPI"
-# cfg <- setScenario(cfg,c("SSP2","NPI"))
-# start_run(cfg,codeCheck=FALSE)
-# # submitCalibration("H12_NPI")
-#
-# cfg$title <- "SSP2_NDC"
-# cfg <- setScenario(cfg,c("SSP2","NDC"))
-# start_run(cfg,codeCheck=FALSE)
+#-------------------------------------------------------------------------------
 
-# regionalized trade runs
+cfg$title <- "SSP2_BASE_bc"
+cfg <- setScenario(cfg,c("SSP2","BASE"))
+start_run(cfg,codeCheck=FALSE)
 
-# cfg$title <- "BASE_regtr"
-# cfg <- setScenario(cfg,c("SSP2","BASE"))
-# cfg$gms$c21_trade_liberalization  <- "regionalized"
-# start_run(cfg,codeCheck=FALSE)
-#
-# cfg$title <- "NPI_regtr"
-# cfg <- setScenario(cfg,c("SSP2","NPI"))
-# cfg$gms$c21_trade_liberalization  <- "regionalized"
-# start_run(cfg,codeCheck=FALSE)
-#
-# cfg$title <- "NDC_regtr"
-# cfg <- setScenario(cfg,c("SSP2","NDC"))
-# cfg$gms$c21_trade_liberalization  <- "regionalized"
-# start_run(cfg,codeCheck=FALSE)
+cfg$title <- "SSP2_NPI_bc"
+cfg <- setScenario(cfg,c("SSP2","NPI"))
+start_run(cfg,codeCheck=FALSE)
+# submitCalibration("H12_NPI")
+
+cfg$title <- "SSP2_NDC_bc"
+cfg <- setScenario(cfg,c("SSP2","NDC"))
+start_run(cfg,codeCheck=FALSE)
+
+# regionalized trade runs ------------------------------------------------------
+
+cfg$title <- "BASE_regtr_bc"
+cfg <- setScenario(cfg,c("SSP2","BASE"))
+cfg$gms$c21_trade_liberalization  <- "regionalized"
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- "NPI_regtr_bc"
+cfg <- setScenario(cfg,c("SSP2","NPI"))
+cfg$gms$c21_trade_liberalization  <- "regionalized"
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- "NDC_regtr_bc"
+cfg <- setScenario(cfg,c("SSP2","NDC"))
+cfg$gms$c21_trade_liberalization  <- "regionalized"
+start_run(cfg,codeCheck=FALSE)
+
+# global interest rate runs ----------------------------------------------------
+
+cfg$title <- "BASE_regtr_bc_gir"
+cfg <- setScenario(cfg,c("SSP2","BASE"))
+cfg$gms$c21_trade_liberalization  <- "regionalized"
+cfg$gms$interest_rate <- "glo_jan16"
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- "NPI_regtr_bc_gir"
+cfg <- setScenario(cfg,c("SSP2","NPI"))
+cfg$gms$c21_trade_liberalization  <- "regionalized"
+cfg$gms$interest_rate <- "glo_jan16"
+start_run(cfg,codeCheck=FALSE)
+
+cfg$title <- "NDC_regtr_bc_gir"
+cfg <- setScenario(cfg,c("SSP2","NDC"))
+cfg$gms$c21_trade_liberalization  <- "regionalized"
+cfg$gms$interest_rate <- "glo_jan16"
+start_run(cfg,codeCheck=FALSE)
+
 
 ### Runs with exo TC
 
-cfg$title <- "BASE_exotc_base_bc"
-cfg <- setScenario(cfg,c("SSP2","BASE"))
-cfg$gms$tc <- "fixtc_nov18"
-cfg$gms$c13_tau_scen <- "base"
-start_run(cfg,codeCheck=FALSE)
-
-cfg$title <- "NPI_exotc_base_bc"
-cfg <- setScenario(cfg,c("SSP2","NPI"))
-cfg$gms$tc <- "fixtc_nov18"
-cfg$gms$c13_tau_scen <- "base"
-start_run(cfg,codeCheck=FALSE)
-
-cfg$title <- "NDC_exotc_base_bc"
-cfg <- setScenario(cfg,c("SSP2","NDC"))
-cfg$gms$tc <- "fixtc_nov18"
-cfg$gms$c13_tau_scen <- "base"
-start_run(cfg,codeCheck=FALSE)
-
-cfg$title <- "NDC_exotc_npi_bc"
-cfg <- setScenario(cfg,c("SSP2","NDC"))
-cfg$gms$tc <- "fixtc_nov18"
-cfg$gms$c13_tau_scen <- "npi"
-start_run(cfg,codeCheck=FALSE)
-
-
-cfg$gms$tc <- "endo_jun18"
+# cfg$title <- "BASE_exotc_base_bc"
+# cfg <- setScenario(cfg,c("SSP2","BASE"))
+# cfg$gms$tc <- "fixtc_nov18"
+# cfg$gms$c13_tau_scen <- "base"
+# start_run(cfg,codeCheck=FALSE)
+#
+# cfg$title <- "NPI_exotc_base_bc"
+# cfg <- setScenario(cfg,c("SSP2","NPI"))
+# cfg$gms$tc <- "fixtc_nov18"
+# cfg$gms$c13_tau_scen <- "base"
+# start_run(cfg,codeCheck=FALSE)
+#
+# cfg$title <- "NDC_exotc_base_bc"
+# cfg <- setScenario(cfg,c("SSP2","NDC"))
+# cfg$gms$tc <- "fixtc_nov18"
+# cfg$gms$c13_tau_scen <- "base"
+# start_run(cfg,codeCheck=FALSE)
+#
+# cfg$title <- "NDC_exotc_npi_bc"
+# cfg <- setScenario(cfg,c("SSP2","NDC"))
+# cfg$gms$tc <- "fixtc_nov18"
+# cfg$gms$c13_tau_scen <- "npi"
+# start_run(cfg,codeCheck=FALSE)
+#
+#
+# cfg$gms$tc <- "endo_jun18"
 
 
 # ### Runs with CC
