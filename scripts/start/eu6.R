@@ -37,7 +37,7 @@ cfg$input[5] <- "calibration_EU6_13Mar19.tgz"
 # ssps <- c("SSP1","SSP2","SSP3","SSP4","SSP5")
 ssps <- c("SSP2")
 
-cfg$force_download <- FALSE
+cfg$force_download <- TRUE
 cfg$recalibrate <- TRUE
 cfg$recalc_npi_ndc <- "ifneeded"
 
@@ -45,6 +45,7 @@ cfg$gms$s80_maxiter <- 30
 # cfg$output <- c("report","validation")
 
 # cfg$recalibrate <- FALSE
+cfg$gms$c_timesteps <- 3
 
 for(ssp in ssps){
   cfg$results_folder <- paste0("output/",ssp,"/:title::date:")
@@ -53,10 +54,8 @@ for(ssp in ssps){
   # cfg <- setScenario(cfg,c(ssp,"BASE"))
   # start_run(cfg,codeCheck=FALSE)
 
-  cfg$title <- paste0(ssp,"_NPI_EU6_exo_tc")
+  cfg$title <- paste0(ssp,"_NPI_EU6")
   cfg <- setScenario(cfg,c(ssp,"NPI"))
-  cfg$gms$tc <- "exo_oct18"
-  cfg$gms$c13_tau_scen <- "npi"
   start_run(cfg,codeCheck=FALSE)
 
   # cfg$title <- paste0(ssp,"_NDC")
