@@ -16,23 +16,48 @@ library(magpie4)
 source("config/default.cfg")
 source("scripts/start_functions.R")
 
+buildInputVector <- function(regionmapping   = "H12",
+                             project_name    = "isimip_rcp",
+                             climatescen_name= "rcp2p6",
+                             co2             = "co2",
+                             climate_model   = "IPSL_CM5A_LR",
+                             resolution      = "c200",
+														 addings         = "_AUS2",
+														 archive_rev     = "38",
+                             madrat_rev      = "4.18",
+                             validation_rev  = "4.18",
+                             calibration     = NULL,
+                             additional_data = "additional_data_rev3.66.tgz") {
+
+  mappings <- c(AUS28="063158371ecc1bc001898e5c2db545cd",
+                AUS19="3e31a478c2e9cbfdcebdd752e1bd7c0d",
+								AUS18="777e58b4a1a8afb9bfc1197a9ca763d8",
+                EUR6="f69106b7beabb6dad84d69d7ad8aeb21")
+  archive_name=paste(project_name,climate_model,climatescen_name,co2,sep="-")
+  archive <- paste0(archive_name, "_rev", archive_rev, "_", resolution, addings, "_", mappings[regionmapping], ".tgz")
+  madrat  <- paste0("rev", madrat_rev,"_", mappings[regionmapping], "_magpie", ".tgz")
+  validation  <- paste0("rev", validation_rev,"_", mappings[regionmapping], "_validation", ".tgz")
+
+  return(c(archive,madrat,validation,calibration,additional_data))
+}
+
 # H12
 # regdef <- "_8a828c6ed5004e77d1ba2025e8ea2261"
 # H11
 # regdef <- "_690d3718e151be1b450b394c1064b1c5"
 # EU6
-regdef <- "_f69106b7beabb6dad84d69d7ad8aeb21"
+# regdef <- "_f69106b7beabb6dad84d69d7ad8aeb21"
 
 # clusterw <- ""
-clusterw <- "_DEU10_EUC3_EUN3_EUS15_EUW2"
+# clusterw <- "_DEU10_EUC3_EUN3_EUS15_EUW2"
 
-cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp2p6-co2_rev34_c200",clusterw,regdef,".tgz")
-cfg$input[2] <- paste0("rev4.14",regdef,"_magpie.tgz")
-cfg$input[3] <- paste0("rev4.14",regdef,"_validation.tgz")
-cfg$input[4] <- "additional_data_rev3.66.tgz"
-# cfg$input[5] <- "calibration_H11_23Oct18.tgz"
-# cfg$input[5] <- "calibration_H12_NPI_06Nov18.tgz"
-cfg$input[5] <- "calibration_EU6_13Mar19.tgz"
+# cfg$input[1] <- paste0("isimip_rcp-IPSL_CM5A_LR-rcp2p6-co2_rev34_c200",clusterw,regdef,".tgz")
+# cfg$input[2] <- paste0("rev4.18",regdef,"_magpie.tgz")
+# cfg$input[3] <- paste0("rev4.18",regdef,"_validation.tgz")
+# cfg$input[4] <- "additional_data_rev3.66.tgz"
+# # cfg$input[5] <- "calibration_H11_23Oct18.tgz"
+# # cfg$input[5] <- "calibration_H12_NPI_06Nov18.tgz"
+# cfg$input[5] <- "calibration_EU6_13Mar19.tgz"
 
 # ssps <- c("SSP1","SSP2","SSP3","SSP4","SSP5")
 ssps <- c("SSP2")
@@ -41,8 +66,8 @@ cfg$force_download <- TRUE
 cfg$recalibrate <- TRUE
 cfg$recalc_npi_ndc <- "ifneeded"
 
-cfg$gms$s80_maxiter <- 30
-# cfg$output <- c("report","validation")
+cfg$gms$s80_maxiter <- 5
+cfg$output <- c("report")
 
 # cfg$recalibrate <- FALSE
 cfg$gms$c_timesteps <- 3
@@ -55,8 +80,10 @@ for(ssp in ssps){
   # start_run(cfg,codeCheck=FALSE)
 
   cfg$title <- paste0(ssp,"_NPI_EU6")
+  cfg$input <- buildInputVector(regionmapping = "EUR6", addings="_DEU10_EUC3_EUN3_EUS15_EUW2")
   cfg <- setScenario(cfg,c(ssp,"NPI"))
   start_run(cfg,codeCheck=FALSE)
+  submitCalibration(name = "calibration_EUR6_jul2019")
 
   # cfg$title <- paste0(ssp,"_NDC")
   # cfg <- setScenario(cfg,c(ssp,"NDC"))
