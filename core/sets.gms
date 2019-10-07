@@ -127,9 +127,30 @@ sets
 *###############################################################################
 
 sets
+        h Region for superregional constraints /CAZ,CHA,EUR,IND,JPN,LAM,MEA,NEU,OAS,REF,SSA,USA/
+        g subregions /DEU,EUC,EUN,EUS,EUW/
+
+        supreg(h,i) mapping of superregions to its regions
+        /
+         CAZ . (CAZ)
+         CHA . (CHA)
+         EUR . (DEU,EUC,EUN,EUS,EUW)
+         IND . (IND)
+         JPN . (JPN)
+         LAM . (LAM)
+         MEA . (MEA)
+         NEU . (NEU)
+         OAS . (OAS)
+         REF . (REF)
+         SSA . (SSA)
+         USA . (USA)
+        /
+
+        h2(h) Superregional (dynamic set)
         i2(i) World regions (dynamic set)
         j2(j) Spatial Clusters (dynamic set)
 ;
+h2(h) = yes;
 i2(i) = yes;
 j2(j) = yes;
 
