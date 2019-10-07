@@ -91,42 +91,42 @@ $title magpie
 
 
 *##################### R SECTION START (VERSION INFO) ##########################
-* 
+*
 * Used data set: isimip_rcp-IPSL_CM5A_LR-rcp2p6-co2_rev38_c200_DEU10_EUC3_EUN3_EUS15_EUW2_f69106b7beabb6dad84d69d7ad8aeb21.tgz
 * md5sum: c9d5a468f2fd41c1cd638244907e945c
 * Repository: scp://cluster.pik-potsdam.de/p/projects/landuse/data/input/archive
-* 
+*
 * Used data set: rev4.18_f69106b7beabb6dad84d69d7ad8aeb21_magpie.tgz
 * md5sum: b9ec9e9420d06f3f396b81973f52809d
 * Repository: scp://cluster.pik-potsdam.de/p/projects/rd3mod/inputdata/output
-* 
+*
 * Used data set: rev4.18_f69106b7beabb6dad84d69d7ad8aeb21_validation.tgz
 * md5sum: 2a5de90ae507dc300891897a0d5e66fe
 * Repository: scp://cluster.pik-potsdam.de/p/projects/rd3mod/inputdata/output
-* 
+*
 * Used data set: additional_data_rev3.66.tgz
 * md5sum: 94bd2a7403bd2f8695cfdf535b60b11a
 * Repository: scp://cluster.pik-potsdam.de/p/projects/landuse/data/input/archive
-* 
+*
 * Low resolution: c200_DEU10_EUC3_EUN3_EUS15_EUW2
 * High resolution: 0.5
-* 
+*
 * Total number of cells: 200
-* 
+*
 * Number of cells per region:
 *   CAZ  CHA  DEU  EUC  EUN  EUS  EUW  IND  JPN  LAM  MEA  NEU  OAS  REF  SSA  USA
 *    19   16   23   13   12   14   13    5    3   33    9    7   14    5    7    7
-* 
+*
 * Regionscode: f69106b7beabb6dad84d69d7ad8aeb21
-* 
+*
 * Regions data revision: 4.18
-* 
+*
 * lpj2magpie settings:
 * * LPJmL data folder: /p/projects/landuse/data/input/lpj_input/isimip_rcp/IPSL_CM5A_LR/rcp2p6/co2
 * * Additional input folder: /p/projects/landuse/data/input/other/rev38
 * * Revision: 38
 * * Call: lpj2magpie(input_folder = path(cfg$lpj_input_folder, gsub("-",     "/", cfg$input)), input2_folder = path(cfg$additional_input_folder,     paste("rev", floor(cfg$revision), sep = "")), output_file = lpj2magpie_file,     rev = cfg$revision)
-* 
+*
 * aggregation settings:
 * * Input resolution: 0.5
 * * Output resolution: c200_DEU10_EUC3_EUN3_EUS15_EUW2
@@ -136,11 +136,11 @@ $title magpie
 * * (clustering) n-repeat: 5
 * * (clustering) n-redistribute: 0
 * * Call: aggregation(input_file = lpj2magpie_file, regionmapping = paste0("../",     cfg$regionmapping), output_file = aggregation_file, rev = cfg$revision,     res_high = cfg$high_res, res_low = cfg$low_res, hcells = cfg$highres_cells,     weight = cfg$cluster_weight, nrepeat = cfg$nrepeat, nredistribute = cfg$nredistribute,     sum_spam_file = cfg$spamfile, debug = FALSE, seed = cfg$seed)
-* 
-* 
-* 
+*
+*
+*
 * Last modification (input data): Mon Jul 15 10:41:25 2019
-* 
+*
 *###################### R SECTION END (VERSION INFO) ###########################
 
 $offupper
@@ -211,7 +211,7 @@ $setglobal phosphorus  off
 $setglobal awms  ipcc2006_aug16
 $setglobal ghg_policy  price_jan19
 $setglobal maccs  on_sep16
-$setglobal som  off
+$setglobal som  static_jan19
 
 $setglobal bioenergy  1stgen_priced_dec18
 $setglobal material  exo_flexreg_apr16
