@@ -17,3 +17,4 @@ elseif (s21_trade_tariff=0),
     i21_trade_tariff(i2,k_trade) = 0;
 );
 
+f21_self_suff("IND",t_all,"molasses")$(f21_self_suff("IND",t_all,"molasses") < 1) = 1;

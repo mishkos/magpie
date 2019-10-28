@@ -43,6 +43,10 @@
  + (vm_supply(i2,k_trade)*sum(ct,f21_self_suff(ct,i2,k_trade))/sum(ct,i21_trade_bal_reduction(ct,k_trade)))
  $(sum(ct,f21_self_suff(ct,i2,k_trade) < 1));
 
+*' Restricted import for of molassess and ethanol for India
+  q21_noimport_ind("IND",k_notrade_ind)..
+  vm_prod_reg("IND",k_notrade_ind) =g= vm_supply("IND",k_notrade_ind);
+
 *' The global excess demand of each tradable good `v21_excess_demad` equals to
 *' the sum over all the imports of importing regions.
 
