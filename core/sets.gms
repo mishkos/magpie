@@ -1,7 +1,8 @@
-*** |  (C) 2008-2018 Potsdam Institute for Climate Impact Research (PIK),
-*** |  authors, and contributors see AUTHORS file
-*** |  This file is part of MAgPIE and licensed under GNU AGPL Version 3
-*** |  or later. See LICENSE file or go to http://www.gnu.org/licenses/
+*** |  (C) 2008-2019 Potsdam Institute for Climate Impact Research (PIK)
+*** |  authors, and contributors see CITATION.cff file. This file is part
+*** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
+*** |  AGPL-3.0, you are granted additional permissions described in the
+*** |  MAgPIE License Exception, version 1.0 (see LICENSE file).
 *** |  Contact: magpie@pik-potsdam.de
 
 *************************BASIC SETS (INDICES)***********************************
@@ -15,9 +16,9 @@
 
 sets
 
-   i all economic regions /CAZ,CHA,EUR,IND,LAM,MEA,NEU,OAS,REF,SSA,USA/
+   i all economic regions /CAZ,CHA,EUR,IND,JPN,LAM,MEA,NEU,OAS,REF,SSA,USA/
 
-   iso Countries /
+   iso list of iso countries /
        ABW,AFG,AGO,AIA,ALA,ALB,AND,ARE,ARG,ARM,
        ASM,ATA,ATF,ATG,AUS,AUT,AZE,BDI,BEL,BEN,
        BES,BFA,BGD,BGR,BHR,BHS,BIH,BLM,BLR,BLZ,
@@ -44,7 +45,7 @@ sets
        UGA,UKR,UMI,URY,USA,UZB,VAT,VCT,VEN,VGB,
        VIR,VNM,VUT,WLF,WSM,YEM,ZAF,ZMB,ZWE /
 
-   j Spatial clusters /
+   j number of LPJ cells /
        CAZ_1*CAZ_28,
        CHA_29*CHA_52,
        EUR_53*EUR_62,
@@ -57,22 +58,23 @@ sets
        SSA_180*SSA_190,
        USA_191*USA_200/
 
-   cell(i,j) Mapping between regions i and clusters j
+   cell(i,j) number of LPJ cells per region i
       /
        CAZ . CAZ_1*CAZ_28
        CHA . CHA_29*CHA_52
        EUR . EUR_53*EUR_62
        IND . IND_63*IND_69
-       LAM . LAM_70*LAM_124
-       MEA . MEA_125*MEA_141
-       NEU . NEU_142*NEU_149
-       OAS . OAS_150*OAS_172
+       JPN . JPN_70*JPN_72
+       LAM . LAM_73*LAM_125
+       MEA . MEA_126*MEA_142
+       NEU . NEU_143*NEU_150
+       OAS . OAS_151*OAS_172
        REF . REF_173*REF_179
        SSA . SSA_180*SSA_190
        USA . USA_191*USA_200
       /
 
-   i_to_iso(i,iso) Mapping between regions and countries
+   i_to_iso(i,iso) mapping regions to iso countries
       /
        CAZ . (AUS,CAN,HMD,NZL,SPM)
        CHA . (CHN,HKG,MAC,TWN)
@@ -81,6 +83,7 @@ sets
        EUR . (IRL,ITA,JEY,LTU,LUX,LVA,MLT,NLD,POL,PRT)
        EUR . (ROU,SVK,SVN,SWE)
        IND . (IND)
+       JPN . (JPN)
        LAM . (ABW,AIA,ARG,ATA,ATG,BES,BHS,BLM,BLZ,BMU)
        LAM . (BOL,BRA,BRB,BVT,CHL,COL,CRI,CUB,CUW,CYM)
        LAM . (DMA,DOM,ECU,FLK,GLP,GRD,GTM,GUF,GUY,HND)
@@ -93,10 +96,10 @@ sets
        NEU . (ALB,AND,BIH,CHE,GRL,ISL,LIE,MCO,MKD,MNE)
        NEU . (NOR,SJM,SMR,SRB,TUR,VAT)
        OAS . (AFG,ASM,ATF,BGD,BRN,BTN,CCK,COK,CXR,FJI)
-       OAS . (FSM,GUM,IDN,IOT,JPN,KHM,KIR,KOR,LAO,LKA)
-       OAS . (MDV,MHL,MMR,MNG,MNP,MYS,NCL,NFK,NIU,NPL)
-       OAS . (NRU,PAK,PCN,PHL,PLW,PNG,PRK,PYF,SGP,SLB)
-       OAS . (THA,TKL,TLS,TON,TUV,UMI,VNM,VUT,WLF,WSM)
+       OAS . (FSM,GUM,IDN,IOT,KHM,KIR,KOR,LAO,LKA,MDV)
+       OAS . (MHL,MMR,MNG,MNP,MYS,NCL,NFK,NIU,NPL,NRU)
+       OAS . (PAK,PCN,PHL,PLW,PNG,PRK,PYF,SGP,SLB,THA)
+       OAS . (TKL,TLS,TON,TUV,UMI,VNM,VUT,WLF,WSM)
        REF . (ARM,AZE,BLR,GEO,KAZ,KGZ,MDA,RUS,TJK,TKM)
        REF . (UKR,UZB)
        SSA . (AGO,BDI,BEN,BFA,BWA,CAF,CIV,CMR,COD,COG)
