@@ -62,8 +62,8 @@ buildInputVector <- function(regionmapping   = "H12",
 # ssps <- c("SSP1","SSP2","SSP3","SSP4","SSP5")
 ssps <- c("SSP2")
 
-cfg$force_download <- TRUE
-cfg$recalibrate <- TRUE
+cfg$force_download <- "ifneeded"
+cfg$recalibrate <- FALSE
 cfg$recalc_npi_ndc <- "ifneeded"
 
 cfg$gms$s80_maxiter <- 5
@@ -71,6 +71,8 @@ cfg$output <- c("report")
 
 # cfg$recalibrate <- FALSE
 cfg$gms$c_timesteps <- 3
+
+cfg$gms$trade <- "superreg_nov19"
 
 for(ssp in ssps){
   cfg$results_folder <- paste0("output/",ssp,"/:title::date:")
@@ -83,7 +85,7 @@ for(ssp in ssps){
   cfg$input <- buildInputVector(regionmapping = "EUR6", addings="_DEU10_EUC3_EUN3_EUS15_EUW2")
   cfg <- setScenario(cfg,c(ssp,"NPI"))
   start_run(cfg,codeCheck=FALSE)
-  submitCalibration(name = "calibration_EUR6_jul2019")
+  # submitCalibration(name = "calibration_EUR6_jul2019")
 
   # cfg$title <- paste0(ssp,"_NDC")
   # cfg <- setScenario(cfg,c(ssp,"NDC"))
