@@ -68,14 +68,14 @@ cfg$recalc_npi_ndc <- "ifneeded"
 
 cfg$gms$s80_maxiter <- 5
 cfg$output <- c("report")
+cfg$results_folder <- paste0("output/f_superreg/:title::date:")
 
 # cfg$recalibrate <- FALSE
-cfg$gms$c_timesteps <- 3
+cfg$gms$c_timesteps <- "coup2100"
 
 cfg$gms$trade <- "superreg_nov19"
 
 for(ssp in ssps){
-  cfg$results_folder <- paste0("output/",ssp,"/:title::date:")
 
   # cfg$title <- paste0(ssp,"_BASE_npi")
   # cfg <- setScenario(cfg,c(ssp,"BASE"))
