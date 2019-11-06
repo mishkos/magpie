@@ -62,7 +62,7 @@ buildInputVector <- function(regionmapping   = "H12",
 # ssps <- c("SSP1","SSP2","SSP3","SSP4","SSP5")
 ssps <- c("SSP2")
 
-cfg$force_download <- "ifneeded"
+cfg$force_download <- FALSE
 cfg$recalibrate <- FALSE
 cfg$recalc_npi_ndc <- "ifneeded"
 
