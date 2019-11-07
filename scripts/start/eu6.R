@@ -67,7 +67,7 @@ cfg$recalibrate <- FALSE
 cfg$recalc_npi_ndc <- "ifneeded"
 
 cfg$gms$s80_maxiter <- 5
-cfg$output <- c("report")
+cfg$output <- c("rds_report")
 cfg$results_folder <- paste0("output/f_superreg/:title::date:")
 
 # cfg$recalibrate <- FALSE
