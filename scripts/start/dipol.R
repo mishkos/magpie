@@ -56,11 +56,8 @@ cfg$results_folder <- paste0("output/dipol/:title::date:")
 # cfg$gms$c_timesteps <- "coup2100"
 cfg$gms$c_timesteps <- 1
 
-# lucode::download_distribute(files            = buildInputVector(),
-#                             repositories     = cfg$repositories,
-#                             modelfolder      = ".",
-#                             additionalDelete = "scripts/downloader/inputdelete.cfg",
-#                             debug            = cfg$debug)
+cfg$gms$c50_scen_neff <- "neff85_85_starty2010"
+
 
 # SSP2
 cfg$title <- "ssp2_test"
