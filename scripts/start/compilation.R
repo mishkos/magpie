@@ -10,7 +10,7 @@
 ############################################################
 
 library(lucode)
-# source("scripts/start_functions.R")
+source("scripts/start_functions.R")
 # source("scripts/performance_test.R")
 source("config/default.cfg")
 
@@ -25,8 +25,8 @@ buildInputVector <- function(regionmapping   = "H12",
                              climate_model   = "IPSL_CM5A_LR",
                              resolution      = "c200",
                              archive_rev     = "38",
-                             madrat_rev      = "4.56",
-                             validation_rev  = "4.56",
+                             madrat_rev      = "4.42",
+                             validation_rev  = "4.42",
 			                       calibration     = NULL,
                              additional_data = "additional_data_rev3.73.tgz") {
   mappings <- c(H11       = "8a828c6ed5004e77d1ba2025e8ea2261",
@@ -45,7 +45,7 @@ buildInputVector <- function(regionmapping   = "H12",
 }
 
 cfg$recalibrate <- FALSE
-cfg$force_download <- "ifneeded"
+cfg$force_download <- TRUE
 
 cfg$gms$s80_maxiter <- 5
 cfg$output <- NULL
@@ -53,7 +53,12 @@ cfg$results_folder <- paste0("output/dipol/:title::date:")
 
 cfg$gms$c_timesteps <- 1
 
-# Compilation 
+# Downlaod
+if(cfg$force_download){
+  download_and_update(cfg)
+}
+
+# Compilation
 cfg$title <- "compilation"
 cfg       <- setScenario(cfg,c("SSP2","NPI"))
 cfg$input <- buildInputVector()
