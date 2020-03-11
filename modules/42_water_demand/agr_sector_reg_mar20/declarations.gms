@@ -12,7 +12,7 @@ parameters
  i42_env_flows_base(t,j)    	     Environmental flow requirements if no protection policy is in place  (mio. m^3)
  ic42_env_flow_policy(i)             Determines whether environmental flow protection is enforced in the current time step (1)
  i42_env_flow_policy(t,i)            Determines whether environmental flow protection is enforced (1)
- i42_irrig_eff(j)                   Irrigation efficiency (1)
+ i42_irrig_eff(i)                   Irrigation efficiency (1)
 ;
 
 equations
@@ -26,7 +26,6 @@ positive variables
 *#################### R SECTION START (OUTPUT DECLARATIONS) ####################
 parameters
  ov_watdem(t,wat_dem,j,type)         Water demand from different sectors (mio. m^3 per yr)
- ov42_irrig_eff(t,j,type)            Irrigation efficiency (1)
  oq42_water_demand(t,wat_dem,j,type) Water consumption in different sectors (mio. m^3 per yr)
 ;
 *##################### R SECTION END (OUTPUT DECLARATIONS) #####################

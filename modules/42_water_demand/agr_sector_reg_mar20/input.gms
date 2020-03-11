@@ -70,9 +70,9 @@ $include "./modules/42_water_demand/input/f42_env_flow_policy.cs3"
 $offdelim
 ;
 
-parameter f42_irrigation_efficiency(i)              Value of irrigation efficiency       (1)
+parameter f42_irrigation_efficiency(t_all,i)              Value of irrigation efficiency       (1)
 /
 $ondelim
-$include "./modules/42_water_demand/input/irrigation_efficiency.cs2"
+$include "./modules/42_water_demand/input/f42_irrigation_efficiency.csv"
 $offdelim
 /;
