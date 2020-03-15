@@ -8,7 +8,7 @@
 ############################################################
 #### Script for a quick compilation  ####
 ############################################################
-
+fileConn<-file("log.txt")
 library(lucode)
 source("scripts/start_functions.R")
 # source("scripts/performance_test.R")
@@ -24,11 +24,11 @@ buildInputVector <- function(regionmapping   = "H12",
                              co2             = "co2",
                              climate_model   = "IPSL_CM5A_LR",
                              resolution      = "c200",
-                             archive_rev     = "38",
+                             archive_rev     = "42",
                              madrat_rev      = "4.42",
                              validation_rev  = "4.42",
 			                       calibration     = NULL,
-                             additional_data = "additional_data_rev3.73.tgz") {
+                             additional_data = "additional_data_rev3.76.tgz") {
   mappings <- c(H11       = "8a828c6ed5004e77d1ba2025e8ea2261",
                 H12       = "690d3718e151be1b450b394c1064b1c5",
 				        coacch    = "c2a48c5eae535d4b8fe9c953d9986f1b",
@@ -45,13 +45,24 @@ buildInputVector <- function(regionmapping   = "H12",
 }
 
 cfg$recalibrate <- FALSE
-cfg$force_download <- TRUE
+cfg$force_download <- FALSE
 
 cfg$gms$s80_maxiter <- 5
 cfg$output <- NULL
 cfg$results_folder <- paste0("output/dipol/:title::date:")
 
 cfg$gms$c_timesteps <- 1
+
+
+cfg       <- setScenario(cfg,c("SSP2","NPI"))
+cfg$input <- c(buildInputVector(),"dipol_inputdata.tgz")
+
+# 42_water_demand
+cfg$gms$water_demand<- "agr_sector_reg_mar20"
+
+# 50_nr_soil_budget
+cfg$gms$c50_scen_neff <- "neff60_eur85_starty2020"
+cfg$gms$c50_scen_neff_pasture <- "constant_eur85"
 
 # Downlaod
 if(cfg$force_download){
@@ -60,8 +71,6 @@ if(cfg$force_download){
 
 # Compilation
 cfg$title <- "compilation"
-cfg       <- setScenario(cfg,c("SSP2","NPI"))
-cfg$input <- buildInputVector()
 
 # configure main model gms file (cfg$model) based on settings of cfg file
 manipulateConfig(cfg$model, cfg$gms)
@@ -80,3 +89,4 @@ for(l in l1) {
 
 
 system("gams main.gms action=c")
+close(fileConn)

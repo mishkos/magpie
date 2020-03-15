@@ -12,7 +12,7 @@ parameters
  i42_env_flows_base(t,j)    	     Environmental flow requirements if no protection policy is in place  (mio. m^3)
  ic42_env_flow_policy(i)             Determines whether environmental flow protection is enforced in the current time step (1)
  i42_env_flow_policy(t,i)            Determines whether environmental flow protection is enforced (1)
- i42_irrig_eff(i)                   Irrigation efficiency (1)
+ i42_irrig_eff(t,i)                   Irrigation efficiency (1)
 ;
 
 equations
