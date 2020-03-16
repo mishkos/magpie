@@ -23,11 +23,11 @@ buildInputVector <- function(regionmapping   = "H12",
                              co2             = "co2",
                              climate_model   = "IPSL_CM5A_LR",
                              resolution      = "c200",
-                             archive_rev     = "38",
-                             madrat_rev      = "4.56",
-                             validation_rev  = "4.56",
+                             archive_rev     = "42",
+                             madrat_rev      = "4.42",
+                             validation_rev  = "4.42",
 			                       calibration     = NULL,
-                             additional_data = "additional_data_rev3.73.tgz") {
+                             additional_data = "additional_data_rev3.76.tgz") {
   mappings <- c(H11       = "8a828c6ed5004e77d1ba2025e8ea2261",
                 H12       = "690d3718e151be1b450b394c1064b1c5",
 				        coacch    = "c2a48c5eae535d4b8fe9c953d9986f1b",
@@ -53,15 +53,19 @@ cfg$gms$s80_maxiter <- 5
 cfg$output <- c("rds_report")
 cfg$results_folder <- paste0("output/dipol/:title::date:")
 
-# cfg$gms$c_timesteps <- "coup2100"
-cfg$gms$c_timesteps <- 1
-
-cfg$gms$c50_scen_neff <- "neff85_85_starty2010"
-
+cfg$gms$c_timesteps <- "coup2100"
+# cfg$gms$c_timesteps <- 1
 
 # SSP2
 cfg$title <- "ssp2_test"
 cfg       <- setScenario(cfg,c("SSP2","NPI"))
 cfg$input <- buildInputVector()
 start_run(cfg,codeCheck=FALSE)
-calib <- magpie4::submitCalibration(name = "calibration_dipol")
+calib     <- magpie4::submitCalibration(name = "calibration_dipol")
+
+# DIPOL_1
+cfg$title       <- "DIPOL_1"
+cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_1"))
+cfg$input       <- buildInputVector()
+cfg$recalibrate <- FALSE
+start_run(cfg,codeCheck=FALSE)

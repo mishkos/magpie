@@ -8,7 +8,6 @@
 ############################################################
 #### Script for a quick compilation  ####
 ############################################################
-fileConn<-file("log.txt")
 library(lucode)
 source("scripts/start_functions.R")
 # source("scripts/performance_test.R")
@@ -89,4 +88,3 @@ for(l in l1) {
 
 
 system("gams main.gms action=c")
-close(fileConn)
