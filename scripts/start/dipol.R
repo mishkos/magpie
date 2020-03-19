@@ -27,7 +27,7 @@ buildInputVector <- function(regionmapping   = "H12",
                              madrat_rev      = "4.42",
                              validation_rev  = "4.42",
 			                       calibration     = "calibration_calibration_dipol_16Mar20.tgz",
-                             additional_data = "additional_data_rev3.76.tgz") {
+                             additional_data = "additional_data_rev3.77.tgz") {
   mappings <- c(H11       = "8a828c6ed5004e77d1ba2025e8ea2261",
                 H12       = "690d3718e151be1b450b394c1064b1c5",
 				        coacch    = "c2a48c5eae535d4b8fe9c953d9986f1b",
@@ -68,7 +68,7 @@ cfg$gms$c_timesteps <- "coup2100"
 # cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_1"))
 # # cfg$input       <- buildInputVector()
 # cfg$recalibrate <- FALSE
-# # start_run(cfg,codeCheck=FALSE)
+# start_run(cfg,codeCheck=FALSE)
 
 # # DIPOL_2
 # cfg$title       <- "DIPOL_2"
@@ -82,11 +82,14 @@ cfg$gms$c_timesteps <- "coup2100"
 # cfg$recalibrate <- FALSE
 # start_run(cfg,codeCheck=FALSE)
 
-# # DIPOL_4
-# cfg$title       <- "DIPOL_4"
-# cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_4"))
-# cfg$recalibrate <- FALSE
-# start_run(cfg,codeCheck=FALSE)
+# DIPOL_4
+cfg$title       <- "DIPOL_4_add_data"
+cfg$input       <- buildInputVector()
+cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_4"))
+file.copy("/p/tmp/merfort/DIPOL/coupled/magpie_release_canditate/modules/56_ghg_policy/input/f56_pollutant_prices_coupling.cs3","modules/56_ghg_policy/input/f56_pollutant_prices_coupling.cs3")
+cfg$gms$c56_pollutant_prices <- "coupling" 
+cfg$recalibrate <- FALSE
+start_run(cfg,codeCheck=FALSE)
 
 # # DIPOL_5
 # cfg$title       <- "DIPOL_5"
@@ -100,8 +103,8 @@ cfg$gms$c_timesteps <- "coup2100"
 # cfg$recalibrate <- FALSE
 # start_run(cfg,codeCheck=FALSE)
 
-# DIPOL_7
-cfg$title       <- "DIPOL_7"
-cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_7"))
-cfg$recalibrate <- FALSE
-start_run(cfg,codeCheck=FALSE)
+# # DIPOL_7
+# cfg$title       <- "DIPOL_7"
+# cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_7"))
+# cfg$recalibrate <- FALSE
+# start_run(cfg,codeCheck=FALSE)
