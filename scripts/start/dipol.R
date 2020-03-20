@@ -46,10 +46,10 @@ buildInputVector <- function(regionmapping   = "H12",
 ### DIPOL runs ###
 #general settings
 
-EU28 <- "AUT, BEL, BGR, HRV, CYP, CZE, DNK, EST, FIN, FRA, DEU, GRC, HUN, IRL, ITA, LVA, LTU, LUX, MLT, NLD, POL, PRT, ROU, SVK, SVN, ESP, SWE, GBR"
+# EU28 <- "AUT, BEL, BGR, HRV, CYP, CZE, DNK, EST, FIN, FRA, DEU, GRC, HUN, IRL, ITA, LVA, LTU, LUX, MLT, NLD, POL, PRT, ROU, SVK, SVN, ESP, SWE, GBR"
 
 cfg$recalibrate <- FALSE
-cfg$force_download <- TRUE
+cfg$force_download <- FALSE
 
 cfg$gms$s80_maxiter <- 5
 cfg$output <- c("rds_report")
@@ -85,12 +85,11 @@ cfg$gms$c_timesteps <- "coup2100"
 # start_run(cfg,codeCheck=FALSE)
 
 # DIPOL_4
-cfg$title       <- "DIPOL_4_eu_dem"
+cfg$title       <- "DIPOL_4_eu_dem_f"
 cfg$input       <- buildInputVector()
 cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_4"))
 file.copy("/p/tmp/merfort/DIPOL/coupled/magpie_release_canditate/modules/56_ghg_policy/input/f56_pollutant_prices_coupling.cs3","modules/56_ghg_policy/input/f56_pollutant_prices_coupling.cs3")
 cfg$gms$c56_pollutant_prices <- "coupling"
-cfg$gms$scen_countries15  <- EU28
 cfg$recalibrate <- FALSE
 start_run(cfg,codeCheck=FALSE)
 
