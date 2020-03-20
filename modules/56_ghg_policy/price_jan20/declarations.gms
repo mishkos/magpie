@@ -1,4 +1,4 @@
-  *** |  (C) 2008-2020 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2020 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -10,6 +10,8 @@ parameters
  p56_pollutant_prices_input(t_all,i,pollutants)   Certificate prices for N2O-N CH4 CO2-C from input files (USD05MER per Mg)
  p56_emis_policy(t,i,pollutants,emis_source)  GHG emission policy scenarios (binary)
  p56_c_price_aff(t_all,i,ac)				  C price used for afforestation decision-making (USD05MER per tC)
+ p56_region_price_shr(t_all,i)	                  GHG price share of the region (1)
+ p56_country_dummy(iso)		                        Dummy parameter indicating whether country is affected by GHG policy or not (1)
 ;
 
 equations
