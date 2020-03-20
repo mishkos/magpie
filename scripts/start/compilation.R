@@ -26,8 +26,8 @@ buildInputVector <- function(regionmapping   = "H12",
                              archive_rev     = "42",
                              madrat_rev      = "4.42",
                              validation_rev  = "4.42",
-			                       calibration     = NULL,
-                             additional_data = "additional_data_rev3.76.tgz") {
+			                       calibration     = "calibration_calibration_dipol_16Mar20.tgz",
+                             additional_data = "additional_data_rev3.77.tgz") {
   mappings <- c(H11       = "8a828c6ed5004e77d1ba2025e8ea2261",
                 H12       = "690d3718e151be1b450b394c1064b1c5",
 				        coacch    = "c2a48c5eae535d4b8fe9c953d9986f1b",
@@ -62,6 +62,9 @@ cfg$gms$water_demand<- "agr_sector_reg_mar20"
 # 50_nr_soil_budget
 cfg$gms$c50_scen_neff <- "neff60_eur85_starty2020"
 cfg$gms$c50_scen_neff_pasture <- "constant_eur85"
+
+
+cfg$gms$c55_scen_conf <- "ssp2"
 
 # Downlaod
 if(cfg$force_download){
