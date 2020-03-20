@@ -49,16 +49,9 @@ $include "./modules/12_interest_rate/input/f12_interest_rate.cs3"
 $offdelim
 ;
 
-$ontext
-parameters
-f12_interest_reg_policy(t_all)  Interest rate scenario fader for country specific policy (1)
-/
-$ondelim
-$include "./modules/12_interest_rate/input/f12_interest_reg_policy.cs2"
-$offdelim
-/
-;
-$offtext
+
+
+
 
 scalars
   s12_alt_interest   Interest rate scenario chosen for regional interest rate scenario switch (1) / 0.05 /
