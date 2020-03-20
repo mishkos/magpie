@@ -1,4 +1,4 @@
-*** |  (C) 2008-2020 Potsdam Institute for Climate Impact Research (PIK)
+  *** |  (C) 2008-2020 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -22,12 +22,12 @@ equations
  q56_emission_costs_cell_yearly(j,emis_cell_yr56)     	  Calculation of cellular costs for annual emissions (mio. USD05MER per yr)
  q56_emission_costs_cell_oneoff(j,emis_cell_one56)     	  Calculation of cellular costs for emissions occuring only once in time (mio. USD05MER per yr)
  q56_reward_cdr_aff_reg(i)                                Regional revenues for carbon captured by afforestation (mio. USD05MER per yr)
- q56_reward_cdr_aff(j)			                       	  Cellular revenues for carbon captured by afforestation (mio. USD05MER per yr)
+ q56_reward_cdr_aff(j)			                       	      Cellular revenues for carbon captured by afforestation (mio. USD05MER per yr)
 ;
 
 positive variables
  vm_reward_cdr_aff(i)                Regional revenues for carbon captured by afforestation (mio. USD05MER per yr)
- v56_reward_cdr_aff(j)				 Cellular revenues for carbon captured by afforestation (mio. USD05MER per yr)
+ v56_reward_cdr_aff(j)				       Cellular revenues for carbon captured by afforestation (mio. USD05MER per yr)
 ;
 
 variables
