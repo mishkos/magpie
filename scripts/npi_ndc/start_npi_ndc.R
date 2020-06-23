@@ -95,12 +95,12 @@ calc_NPI_NDC <- function(policyregions = "iso",
   addline("##############")
   ndc_ad <- droplevels(subset(pol_def, policy=="ndc" & landpool=="forest"))
   addtable(ndc_ad[,c(-2,-3)])
-  ndc_ad <- calc_policy(ndc_ad, forest_stock, pol_type="ad", pol_mapping=pol_mapping,
-                        spatialheader_file=spatialheader_file, spam_file=spam_file)
-  getNames(ndc_ad) <- "ndc.forest"
+  # ndc_ad <- calc_policy(ndc_ad, forest_stock, pol_type="ad", pol_mapping=pol_mapping,
+  #                       spatialheader_file=spatialheader_file, spam_file=spam_file)
+  # getNames(ndc_ad) <- "ndc.forest"
   #Set all values before 2015 to NPI values; copy the values til 2010 from the NPI data
-  ndc_ad[,which(getYears(ndc_ad,as.integer=TRUE)<=2020),] <-
-    npi_ad[,which(getYears(npi_ad,as.integer=TRUE)<=2020),]
+  # ndc_ad[,which(getYears(ndc_ad,as.integer=TRUE)<=2020),] <-
+  #   npi_ad[,which(getYears(npi_ad,as.integer=TRUE)<=2020),]
   cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
 
 
@@ -117,9 +117,9 @@ calc_NPI_NDC <- function(policyregions = "iso",
   addline("################")
   npi_aolc <- droplevels(subset(pol_def, policy=="npi" & landpool=="other"))
   addtable(npi_aolc[,c(-2,-3)])
-  npi_aolc <- calc_policy(npi_aolc, land_stock[,,"other"], pol_type="ad", pol_mapping=pol_mapping,
-                          spatialheader_file=spatialheader_file, spam_file=spam_file)
-  getNames(npi_aolc) <- "npi.other"
+  # npi_aolc <- calc_policy(npi_aolc, land_stock[,,"other"], pol_type="ad", pol_mapping=pol_mapping,
+  #                         spatialheader_file=spatialheader_file, spam_file=spam_file)
+  # getNames(npi_aolc) <- "npi.other"
   cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
 
   cat("Compute NDC AOLC policy")
@@ -129,23 +129,23 @@ calc_NPI_NDC <- function(policyregions = "iso",
   addline("################")
   ndc_aolc <- droplevels(subset(pol_def, policy=="ndc" & landpool=="other"))
   addtable(ndc_aolc[,c(-2,-3)])
-  ndc_aolc <- calc_policy(ndc_aolc,land_stock[,,"other"],pol_type="ad",pol_mapping=pol_mapping,
-                          spatialheader_file=spatialheader_file, spam_file=spam_file)
-  getNames(ndc_aolc) <- "ndc.other"
+  # ndc_aolc <- calc_policy(ndc_aolc,land_stock[,,"other"],pol_type="ad",pol_mapping=pol_mapping,
+  #                         spatialheader_file=spatialheader_file, spam_file=spam_file)
+  # getNames(ndc_aolc) <- "ndc.other"
   #Set all values before 2015 to NPI values; copy the values til 2010 from the NPI data
-  ndc_aolc[,which(getYears(ndc_aolc,as.integer=TRUE)<=2020),] <-
-    npi_aolc[,which(getYears(npi_aolc,as.integer=TRUE)<=2020),]
+  # ndc_aolc[,which(getYears(ndc_aolc,as.integer=TRUE)<=2020),] <-
+  #   npi_aolc[,which(getYears(npi_aolc,as.integer=TRUE)<=2020),]
 
   #write AD and AOLC policies together
-  none_ad_aolc_pol <- mbind(npi_ad,npi_aolc)
-  none_ad_aolc_pol[] <- 0
-  getNames(none_ad_aolc_pol) <- c("none.forest","none.other")
-  ad_aolc_pol <- mbind(none_ad_aolc_pol,npi_ad,npi_aolc,ndc_ad,ndc_aolc)
+  # none_ad_aolc_pol <- mbind(npi_ad,npi_aolc)
+  # none_ad_aolc_pol[] <- 0
+  # getNames(none_ad_aolc_pol) <- c("none.forest","none.other")
+  # ad_aolc_pol <- mbind(none_ad_aolc_pol,npi_ad,npi_aolc,ndc_ad,ndc_aolc)
 
-  adfiles <- paste0(outfolder_ad_aolc, out_ad_file)
-  write.magpie(ad_aolc_pol, adfiles[1])
-  if(length(adfiles >1)) for(i in 2:length(adfiles)) file.copy(adfiles[1],adfiles[i], overwrite=TRUE)
-  cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
+  # adfiles <- paste0(outfolder_ad_aolc, out_ad_file)
+  # write.magpie(ad_aolc_pol, adfiles[1])
+  # if(length(adfiles >1)) for(i in 2:length(adfiles)) file.copy(adfiles[1],adfiles[i], overwrite=TRUE)
+  # cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
 
   addline("")
   addline("##----------------------------------------------------------------------------")
@@ -159,11 +159,11 @@ calc_NPI_NDC <- function(policyregions = "iso",
   addline("###############")
   npi_aff <- droplevels(subset(pol_def, policy=="npi" & landpool=="affore"))
   addtable(npi_aff[,c(-2,-3)])
-  npi_aff <- calc_policy(npi_aff, land_stock, pol_type="aff", pol_mapping=pol_mapping,
-                         weight=dimSums(land_stock[,2005,c("crop","past")]),
-                         spatialheader_file=spatialheader_file, spam_file=spam_file)
-  getNames(npi_aff) <- "npi"
-  cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
+  # npi_aff <- calc_policy(npi_aff, land_stock, pol_type="aff", pol_mapping=pol_mapping,
+  #                        weight=dimSums(land_stock[,2005,c("crop","past")]),
+  #                        spatialheader_file=spatialheader_file, spam_file=spam_file)
+  # getNames(npi_aff) <- "npi"
+  # cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
 
   cat("Compute NDC  AFF policy")
   addline("")
@@ -172,24 +172,24 @@ calc_NPI_NDC <- function(policyregions = "iso",
   addline("###############")
   ndc_aff <- droplevels(subset(pol_def, policy=="ndc" & landpool=="affore"))
   addtable(ndc_aff[,c(-2,-3)])
-  ndc_aff <- calc_policy(ndc_aff, land_stock, pol_type="aff", pol_mapping=pol_mapping,
-                         weight=dimSums(land_stock[,2005,c("crop","past")]),
-                         spatialheader_file=spatialheader_file, spam_file=spam_file)
-  getNames(ndc_aff) <- "ndc"
+  # ndc_aff <- calc_policy(ndc_aff, land_stock, pol_type="aff", pol_mapping=pol_mapping,
+  #                        weight=dimSums(land_stock[,2005,c("crop","past")]),
+  #                        spatialheader_file=spatialheader_file, spam_file=spam_file)
+  # getNames(ndc_aff) <- "ndc"
   #set all values before 2015 to NPI values; copy the values til 2010 from the NPI data
-  ndc_aff[,which(getYears(ndc_aff,as.integer=TRUE)<=2020),] <-
-    npi_aff[,which(getYears(npi_aff,as.integer=TRUE)<=2020),]
+  # ndc_aff[,which(getYears(ndc_aff,as.integer=TRUE)<=2020),] <-
+  #   npi_aff[,which(getYears(npi_aff,as.integer=TRUE)<=2020),]
 
   #write AFF policies
-  none_aff_pol <- npi_aff
-  none_aff_pol[] <- 0
-  getNames(none_aff_pol) <- "none"
-  aff_pol <- mbind(none_aff_pol,npi_aff,ndc_aff)
-  afffiles <- paste0(outfolder_aff, out_aff_file)
-  write.magpie(aff_pol, afffiles[1])
-  if(length(afffiles >1)) for(i in 2:length(afffiles)) file.copy(afffiles[1],afffiles[i], overwrite=TRUE)
-
-  cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
+  # none_aff_pol <- npi_aff
+  # none_aff_pol[] <- 0
+  # getNames(none_aff_pol) <- "none"
+  # aff_pol <- mbind(none_aff_pol,npi_aff,ndc_aff)
+  # afffiles <- paste0(outfolder_aff, out_aff_file)
+  # write.magpie(aff_pol, afffiles[1])
+  # if(length(afffiles >1)) for(i in 2:length(afffiles)) file.copy(afffiles[1],afffiles[i], overwrite=TRUE)
+  # 
+  # cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
 }
 
 calc_tperiods <- function(y) {
@@ -212,7 +212,6 @@ calc_flows <- function(stock) {
 calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
                         weight=NULL, spatialheader_file = "../../input/spatial_header.rda",
                         spam_file = Sys.glob("../../input/*-to-*_sum.spam")) {
-  ## pol_type = {"aff","ad"}
 
   require(luscale)
   require(lucode)
@@ -263,18 +262,21 @@ calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
     #percentage: 0 = no reduction, 1 = full reduction of deforestation
     #Mha if pol_type=="aff"
     magpie_policy[countries,targetyear,] <- policy[policy$key==i,"target"]
+    magpie_policy[countries,baseyear,] <- 1
     #interpolate between baseyear and targetyear
     #set same target for all years after targetyear
     if(targetyear==baseyear) {
       magpie_policy[countries,y_full,] <- setYears(magpie_policy[countries,baseyear,],NULL)
     } else {
-      magpie_policy[countries,y_full,] <- time_interpolate(magpie_policy[countries,c(baseyear,targetyear),],y_full,
-                                                         extrapolation_type = "constant")
+      magpie_policy[countries,y_full,] <- 
+        time_interpolate(magpie_policy[countries,c(baseyear,targetyear),],y_full,
+                         extrapolation_type = "constant")
     }
     #set reference flow based on target type
     if(pol_type=="ad") {
       c_index <- (sub("\\..*$","",getCells(stock)) %in% countries)
-      stock[c_index,tp>targetyear,] <- setYears(stock[c_index,targetyear,],NULL)
+      # stock[c_index,tp>targetyear,] <- setYears(stock[c_index,targetyear,],NULL)
+      stock[c_index,tp>baseyear,] <- setYears(stock[c_index,baseyear,],NULL)
       targettypes <- unique(policy[policy$key==i,"targettype"])
       if(!all(targettypes %in% 1:2)) stop("unknow targettype; needs to be 1 or 2")
       if (any(targettypes == 1)) {
@@ -292,9 +294,17 @@ calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
   } else if(pol_type=="ad") {
     magpie_policy <- speed_aggregate(x=magpie_policy, rel=rel)
     t_periods <- calc_tperiods(c(tp[1],tp))
-    magpie_policy <- magpie_policy * flow * t_periods + stock
+    ext_periods <- t_periods[,year_extension,] 
+    ext_periods[] <- cumsum(as.vector(ext_periods))
+    pol_periods <- t_periods
+    pol_periods[,year_extension,] <- ext_periods 
+    magpie_policy <- stock - magpie_policy * flow * pol_periods 
   }
 
+  plot_pol(mpol=magpie_policy, policy=policy,
+           hist_forest=stock[,getYears(stock,as.integer=T) <= 2030,], 
+           pol_mapping=pol_mapping, ofile="npi_ad_new.pdf")
+  
   load(spatialheader_file)
   getCells(magpie_policy) <- spatial_header
 
