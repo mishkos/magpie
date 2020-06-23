@@ -7,6 +7,10 @@
 
  q21_notrade(i2,kall).. vm_prod_reg(i2,kall) =g= vm_supply(i2,kall) + sum(ct,f21_trade_balance(ct,i2,kall)) - v21_manna_from_heaven(i2,kall);
 
+ q21_trade_glo(kall)..
+  sum(i2 ,vm_prod_reg(i2,kall)) =g=
+  sum(i2, vm_supply(i2,kall)) + sum(ct,f21_trade_balanceflow(ct,kall));
+
 *' The regional production must be bigger than the regional demand plus exports
 *' from that region (or minus imports in case of a negative trade balance). As
 *' the trade balance in this realization is exogenously defined there is the

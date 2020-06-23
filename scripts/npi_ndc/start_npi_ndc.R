@@ -20,7 +20,6 @@ calc_NPI_NDC <- function(policyregions = "iso",
 
   require(magclass)
   require(luscale)
-  require(lucode)
   require(madrat)
 
   # load the cell mapping policy
@@ -188,7 +187,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
   # afffiles <- paste0(outfolder_aff, out_aff_file)
   # write.magpie(aff_pol, afffiles[1])
   # if(length(afffiles >1)) for(i in 2:length(afffiles)) file.copy(afffiles[1],afffiles[i], overwrite=TRUE)
-  # 
+  #
   # cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
 }
 
@@ -214,7 +213,6 @@ calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
                         spam_file = Sys.glob("../../input/*-to-*_sum.spam")) {
 
   require(luscale)
-  require(lucode)
   require(madrat)
 
   #extent stock beyond last observed value with constant values from the last year
@@ -230,10 +228,10 @@ calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
   #select and filter countries that exist in the chosen policy mapping
   policy_countries <- intersect(policy$dummy,unique(pol_mapping))
   policy <- policy[policy$dummy %in% policy_countries,]
-  
+
   #create key to distinguish different cases of baseyear, targetyear combinations
   policy$key <- paste(policy$baseyear,policy$targetyear)
-  
+
 
   #set stock to zero or Inf for countries without policies
   # (representing no constraint for min and max constraints)
@@ -268,7 +266,7 @@ calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
     if(targetyear==baseyear) {
       magpie_policy[countries,y_full,] <- setYears(magpie_policy[countries,baseyear,],NULL)
     } else {
-      magpie_policy[countries,y_full,] <- 
+      magpie_policy[countries,y_full,] <-
         time_interpolate(magpie_policy[countries,c(baseyear,targetyear),],y_full,
                          extrapolation_type = "constant")
     }
@@ -294,17 +292,17 @@ calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
   } else if(pol_type=="ad") {
     magpie_policy <- speed_aggregate(x=magpie_policy, rel=rel)
     t_periods <- calc_tperiods(c(tp[1],tp))
-    ext_periods <- t_periods[,year_extension,] 
+    ext_periods <- t_periods[,year_extension,]
     ext_periods[] <- cumsum(as.vector(ext_periods))
     pol_periods <- t_periods
-    pol_periods[,year_extension,] <- ext_periods 
-    magpie_policy <- stock - magpie_policy * flow * pol_periods 
+    pol_periods[,year_extension,] <- ext_periods
+    magpie_policy <- stock - magpie_policy * flow * pol_periods
   }
 
   plot_pol(mpol=magpie_policy, policy=policy,
-           hist_forest=stock[,getYears(stock,as.integer=T) <= 2030,], 
+           hist_forest=stock[,getYears(stock,as.integer=T) <= 2030,],
            pol_mapping=pol_mapping, ofile="npi_ad_new.pdf")
-  
+
   load(spatialheader_file)
   getCells(magpie_policy) <- spatial_header
 
