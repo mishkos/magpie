@@ -1,12 +1,31 @@
-** Calculation of Single rotation model rotation lengths
+** Keep the plantation area fixing flag as 0 till 2020. If the flag is set to 1
+if(s32_fix_plant = 1 OR s32_fix_plant = 0,
+  loop(t_all,
+    if(m_year(t_all) <= sm_fix_SSP2 AND s32_fix_plant =1,
+    p32_fix_plant(t_all) = 0;
+    else
+    p32_fix_plant(t_all) = s32_fix_plant;
+    );
+  );
+  else
+  display "Unrecognized setting for s32_fix_plant, please select 1 or 0.";
+  abort "Invalid setting for s32_fix_plant.";
+);
 
+** Check if s32_plant_share is set correctly
+if(s32_plant_share < 0 OR s32_plant_share > 1,
+  display "Unrecognized setting for s32_plant_share, please select a value between 0 and 1.";
+  abort "Invalid setting for s32_plant_share.";
+);
+
+** Calculation of Single rotation model rotation lengths
 ** Using forestry carbon densitiy here via carbon density data exchange from carbon module.
 p32_carbon_density_ac_forestry(t_all,j,ac) = pm_carbon_density_ac_forestry(t_all,j,ac,"vegc");
 
 ** Calculating the marginal of carbon density i.e. change in carbon density over two time steps
 ** The carbon densities are tC/ha/year so we don't have to divide by timestep length.
-loop(ac_sub,
-  p32_carbon_density_ac_marg(t_all,j,ac_sub) = p32_carbon_density_ac_forestry(t_all,j,ac_sub) - p32_carbon_density_ac_forestry(t_all,j,ac_sub-1);
+loop(ac$(ord(ac) > 1),
+  p32_carbon_density_ac_marg(t_all,j,ac) = (p32_carbon_density_ac_forestry(t_all,j,ac) - p32_carbon_density_ac_forestry(t_all,j,ac-1))/5;
   );
 p32_carbon_density_ac_marg(t_all,j,"ac0") = 0;
 
@@ -22,8 +41,13 @@ p32_IGR(t_all,j,ac) =   (p32_carbon_density_ac_marg(t_all,j,ac)/p32_carbon_densi
 ** As long as the prevailing interest rate becomes higher than IGR, it is assumed that the forest owner would rather
 ** keep his/her investment in bank rather than in keeping the forest standing.
 ** The easiest way to do this calculation is to count a value of 1 for IGR>interest rate and a value of 0 for IGR<interest rate.
-p32_rot_flg(t_all,j,ac) = 1$(p32_IGR(t_all,j,ac) - sum(cell(i,j),pm_interest(t_all,i)) >  0)
-                        + 0$(p32_IGR(t_all,j,ac) - sum(cell(i,j),pm_interest(t_all,i)) <= 0);
+$ifthen "%c32_interest_rate%" == "regional"
+  p32_rot_flg(t_all,j,ac) = 1$(p32_IGR(t_all,j,ac) - sum(cell(i,j),pm_interest("y1995",i)) >  0)
+                          + 0$(p32_IGR(t_all,j,ac) - sum(cell(i,j),pm_interest("y1995",i)) <= 0);
+$elseif "%c32_interest_rate%" == "global"
+  p32_rot_flg(t_all,j,ac) = 1$(p32_IGR(t_all,j,ac) - s32_forestry_int_rate  >  0)
+                          + 0$(p32_IGR(t_all,j,ac) - s32_forestry_int_rate <= 0);
+$endif
 
 ** From the above calculation, now it is easier to count how many age-classes can be sustained before IGR falls below interest rate.
 
@@ -109,16 +133,6 @@ loop(t_all,
   p32_rotation_cellular_harvesting(t_all+1,j)$(abs(p32_rotation_cellular_harvesting(t_all+1,j) - p32_rotation_cellular_harvesting(t_all,j))>2 AND ord(t_all)<card(t_all)) = p32_rotation_cellular_harvesting(t_all,j);
   );
 
-** Rotation used for establishment decision.
-p32_rot_length_ac_eqivalent(t_all,j) = p32_rotation_cellular_estb(t_all,j);
-
-** Define protect and harvest setting
-protect32(t,j,ac_sub) = no;
-protect32(t,j,ac_sub) = yes$(ord(ac_sub) < p32_rotation_cellular_harvesting(t,j));
-
-harvest32(t,j,ac_sub) = no;
-harvest32(t,j,ac_sub) = yes$(ord(ac_sub) >= p32_rotation_cellular_harvesting(t,j));
-
 ** Afforestation policies NPI and NDCs
 p32_aff_pol(t,j) = f32_aff_pol(t,j,"%c32_aff_policy%");
 
@@ -135,35 +149,37 @@ p32_cdr_ac_plant(t,j,ac) = 0;
 ** Initialize parameter
 p32_land(t,j,type32,ac) = 0;
 
-** divide initial forestry area by number of age classes within protect32
-** since protect32 is TRUE for ord(ac_sub) < p32_rotation_cellular_estb(j) there is
-** one additional junk which is assigned to ac0
+** Define ini32 set. ac0 is excluded here. Therefore no initial shifting is needed.
+ini32(j,ac) = no;
+ini32(j,ac) = yes$(ord(ac) > 1 AND ac.off <= p32_rotation_cellular_harvesting("y1995",j));
+
+** divide initial forestry area by number of age classes within ini32
 if(s32_initial_distribution = 0,
-** Initialize with highest age class and don't shift it when intitial distribution is off
+** Initialize with highest age class
   p32_land(t,j,"plant","acx") = pcm_land(j,"forestry");
 
 elseif s32_initial_distribution = 1,
-** Initialize with equal distribtuion in rotation age class
-  p32_plant_ini_ac(j) = pm_land_start(j,"forestry")/p32_rotation_cellular_estb("y1995",j);
-  p32_land("y1995",j,"plant",ac_sub)$(protect32("y1995",j,ac_sub)) = p32_plant_ini_ac(j);
-  p32_land("y1995",j,"plant","ac0") = p32_plant_ini_ac(j);
+** Initialize with equal distribution among rotation age classes
+  p32_plant_ini_ac(j) = pm_land_start(j,"forestry")/p32_rotation_cellular_harvesting("y1995",j);
+  p32_land("y1995",j,"plant",ac)$(ini32(j,ac)) = p32_plant_ini_ac(j);
 
-** Initial shifting of age classes
-  p32_land(t,j,"plant",ac)$(ord(ac) > 1) = p32_land(t,j,"plant",ac-1);
-** Reset ac0 to zero
-  p32_land("y1995",j,"plant","ac0") = 0;
-
-  );
-*display p32_land;
+);
 ** Initialization of land
 p32_land_start_ac(j,type32,ac) = p32_land("y1995",j,type32,ac);
 
 *fix bph effect to zero for all age classes except the ac that is chosen for the bph effect to occur after planting (e.g. canopy closure)
+*fade-in from ac10 to ac30. First effect in ac10 (ord 3), last effect in ac30 (ord 7).
+ac_bph(ac) = no;
+ac_bph(ac) = yes$(ord(ac) >= 3 AND ord(ac) <= 7);
+display ac_bph;
+
 p32_aff_bgp(j,ac) = 0;
-p32_aff_bgp(j,"%c32_bgp_ac%") = f32_aff_bgp(j,"%c32_aff_bgp%");
-
-** Proportion of production coming from plantations
-p32_plant_prod_share(t_ext,i) = f32_plant_prod_share("y2100");
-p32_plant_prod_share(t_all,i) = f32_plant_prod_share(t_all);
-
+p32_tcre_glo(j) = 0;
+if(s32_tcre_local = 1,
+	p32_aff_bgp(j,ac_bph) = f32_aff_bgp(j,"%c32_aff_bgp%")/f32_tcre(j,"%c32_tcre_ctrl%")/card(ac_bph);
+else
+*m_weightedmean returns a global value, which is then used assigned to all j. We use land area as weight.
+  p32_tcre_glo(j2) = m_weightedmean(f32_tcre(j,"%c32_tcre_ctrl%"),sum(land, pcm_land(j,land)),j)
+  p32_aff_bgp(j,ac_bph) = f32_aff_bgp(j,"%c32_aff_bgp%")/p32_tcre_glo(j)/card(ac_bph)
+);
 **************************************************************************
