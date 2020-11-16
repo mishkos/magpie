@@ -8,7 +8,7 @@
 * Set-switch for countries affected by regional ghg policy
 * Default: all iso countries selected
 sets
-  policy_countries56 (iso) countries to be affected by ghg policy / ABW,AFG,AGO,AIA,ALA,ALB,AND,ARE,ARG,ARM,
+  policy_countries56(iso) countries to be affected by ghg policy / ABW,AFG,AGO,AIA,ALA,ALB,AND,ARE,ARG,ARM,
                           ASM,ATA,ATF,ATG,AUS,AUT,AZE,BDI,BEL,BEN,
                           BES,BFA,BGD,BGR,BHR,BHS,BIH,BLM,BLR,BLZ,
                           BMU,BOL,BRA,BRB,BRN,BTN,BVT,BWA,CAF,CAN,
@@ -48,9 +48,11 @@ scalars
   s56_counter counter for C price interpolation (1) / 0 /
   s56_timesteps number of time steps for C price interpolation (1) / 0 /
   s56_offset helper for C price interpolation (1) / 0 /
+  s56_peatland_policy 1=on 0=off (binary) / 0 /
 ;
 
-$setglobal c56_pollutant_prices  emulator
+$setglobal c56_pollutant_prices  R2M41-SSP2-NPi
+$setglobal c56_pollutant_prices_noselect  R2M41-SSP2-NPi
 $setglobal c56_emis_policy  redd+_nosoil
 
 table f56_pollutant_prices(t_all,i,pollutants,ghgscen56) GHG certificate prices for N2O-N CH4 CO2-C (USD05MER per t)
