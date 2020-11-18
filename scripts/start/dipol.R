@@ -9,7 +9,8 @@
 #### Script for the generation of COACCH simulations ####
 ############################################################
 
-library(lucode)
+library(lucode2)
+library(gms)
 source("scripts/start_functions.R")
 source("scripts/performance_test.R")
 source("config/default.cfg")
@@ -23,11 +24,11 @@ buildInputVector <- function(regionmapping   = "H12",
                              co2             = "co2",
                              climate_model   = "IPSL_CM5A_LR",
                              resolution      = "c200",
-                             archive_rev     = "42",
-                             madrat_rev      = "4.42",
-                             validation_rev  = "4.42",
+                             archive_rev     = "48",
+                             madrat_rev      = "4.52",
+                             validation_rev  = "4.52",
 			                       calibration     = "calibration_calibration_dipol_16Mar20.tgz",
-                             additional_data = "additional_data_rev3.77.tgz") {
+                             additional_data = "additional_data_rev3.85.tgz") {
   mappings <- c(H11       = "8a828c6ed5004e77d1ba2025e8ea2261",
                 H12       = "690d3718e151be1b450b394c1064b1c5",
 				        coacch    = "c2a48c5eae535d4b8fe9c953d9986f1b",
@@ -38,8 +39,8 @@ buildInputVector <- function(regionmapping   = "H12",
                 capri     = "e7e72fddc44cc3d546af7b038c651f51")
   archive_name <- paste(project_name,climate_model,climatescen_name,co2,sep="-")
   archive      <- paste0(archive_name, "_rev", archive_rev, "_", resolution, "_", mappings[regionmapping], ".tgz")
-  madrat       <- paste0("rev", madrat_rev,"_", mappings[regionmapping], "_magpie", ".tgz")
-  validation   <- paste0("rev", validation_rev,"_", mappings[regionmapping], "_validation", ".tgz")
+  madrat       <- paste0("rev", madrat_rev,"_", tolower(regionmapping), "_magpie", ".tgz")
+  validation   <- paste0("rev", validation_rev,"_", tolower(regionmapping), "_validation", ".tgz")
   return(c(archive,madrat,validation,calibration,additional_data))
 }
 
