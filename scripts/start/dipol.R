@@ -28,7 +28,8 @@ buildInputVector <- function(regionmapping   = "H12",
                              madrat_rev      = "4.52",
                              validation_rev  = "4.52",
 			                       calibration     = "calibration_calibration_dipol_16Mar20.tgz",
-                             additional_data = "additional_data_rev3.85.tgz") {
+                             additional_data = "additional_data_rev3.85.tgz",
+                             patch_inputdata = "dipol_inputdata.tgz") {
   mappings <- c(H11       = "8a828c6ed5004e77d1ba2025e8ea2261",
                 H12       = "690d3718e151be1b450b394c1064b1c5",
 				        coacch    = "c2a48c5eae535d4b8fe9c953d9986f1b",
@@ -41,7 +42,7 @@ buildInputVector <- function(regionmapping   = "H12",
   archive      <- paste0(archive_name, "_rev", archive_rev, "_", resolution, "_", mappings[regionmapping], ".tgz")
   madrat       <- paste0("rev", madrat_rev,"_", tolower(regionmapping), "_magpie", ".tgz")
   validation   <- paste0("rev", validation_rev,"_", tolower(regionmapping), "_validation", ".tgz")
-  return(c(archive,madrat,validation,calibration,additional_data))
+  return(c(archive,madrat,validation,calibration,additional_data,patch_inputdata))
 }
 
 ### DIPOL runs ###
@@ -50,11 +51,14 @@ buildInputVector <- function(regionmapping   = "H12",
 # EU28 <- "AUT, BEL, BGR, HRV, CYP, CZE, DNK, EST, FIN, FRA, DEU, GRC, HUN, IRL, ITA, LVA, LTU, LUX, MLT, NLD, POL, PRT, ROU, SVK, SVN, ESP, SWE, GBR"
 
 cfg$recalibrate <- FALSE
-cfg$force_download <- FALSE
+cfg$force_download <- TRUE
+
+cfg$input  <- buildInputVector()
 
 cfg$gms$s80_maxiter <- 5
 cfg$output <- c("rds_report")
 cfg$results_folder <- paste0("output/dipol/:title::date:")
+title_flag <- ""
 
 cfg$gms$c_timesteps <- "coup2100"
 # cfg$gms$c_timesteps <- 1
@@ -66,48 +70,42 @@ cfg$gms$c_timesteps <- "coup2100"
 # start_run(cfg,codeCheck=FALSE)
 # calib     <- magpie4::submitCalibration(name = "calibration_dipol")
 
-# # DIPOL_1
-# cfg$title       <- "DIPOL_1"
-# cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_1"))
-# # cfg$input       <- buildInputVector()
-# cfg$recalibrate <- FALSE
-# start_run(cfg,codeCheck=FALSE)
+title_flag <- ""
 
-# # DIPOL_2
-# cfg$title       <- "DIPOL_2"
-# cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_2"))
-# cfg$recalibrate <- FALSE
-# start_run(cfg,codeCheck=FALSE)
-
-# # DIPOL_3
-# cfg$title       <- "DIPOL_3"
-# cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_3"))
-# cfg$recalibrate <- FALSE
-# start_run(cfg,codeCheck=FALSE)
-
-# DIPOL_4
-cfg$title       <- "DIPOL_4_eu_dem_f"
-cfg$input       <- buildInputVector()
-cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_4"))
-file.copy("/p/tmp/merfort/DIPOL/coupled/magpie_release_canditate/modules/56_ghg_policy/input/f56_pollutant_prices_coupling.cs3","modules/56_ghg_policy/input/f56_pollutant_prices_coupling.cs3")
-cfg$gms$c56_pollutant_prices <- "coupling"
+# DIPOL_1
+cfg$title       <- paste("DIPOL_1_", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_1"))
 cfg$recalibrate <- FALSE
 start_run(cfg,codeCheck=FALSE)
 
-# # DIPOL_5
-# cfg$title       <- "DIPOL_5"
-# cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_5"))
-# cfg$recalibrate <- FALSE
-# start_run(cfg,codeCheck=FALSE)
+# DIPOL_2
+cfg$title       <- paste("DIPOL_2_", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_2"))
+cfg$recalibrate <- FALSE
+start_run(cfg,codeCheck=FALSE)
 
-# # DIPOL_6
-# cfg$title       <- "DIPOL_6"
-# cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_6"))
-# cfg$recalibrate <- FALSE
-# start_run(cfg,codeCheck=FALSE)
+# DIPOL_3
+cfg$title       <- paste("DIPOL_3_", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_3"))
+cfg$recalibrate <- FALSE
+start_run(cfg,codeCheck=FALSE)
 
-# # DIPOL_7
-# cfg$title       <- "DIPOL_7"
-# cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_7"))
-# cfg$recalibrate <- FALSE
-# start_run(cfg,codeCheck=FALSE)
+# DIPOL_4
+cfg$title       <- paste("DIPOL_4_", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_4"))
+# file.copy("/p/tmp/merfort/DIPOL/coupled/magpie_release_canditate/modules/56_ghg_policy/input/f56_pollutant_prices_coupling.cs3","modules/56_ghg_policy/input/f56_pollutant_prices_coupling.cs3")
+# cfg$gms$c56_pollutant_prices <- "coupling"
+cfg$recalibrate <- FALSE
+start_run(cfg,codeCheck=FALSE)
+
+# DIPOL_5
+cfg$title       <- paste("DIPOL_5_", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_5"))
+cfg$recalibrate <- FALSE
+start_run(cfg,codeCheck=FALSE)
+
+# DIPOL_6
+cfg$title       <- paste("DIPOL_6_", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_6"))
+cfg$recalibrate <- FALSE
+start_run(cfg,codeCheck=FALSE)
