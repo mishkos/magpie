@@ -60,6 +60,7 @@ cfg       <- setScenario(cfg,c("SSP2","NPI","DIPOL_1"))
 cfg$input <- buildInputVector()
 # 42_water_demand
 # cfg$gms$water_demand<- "agr_sector_reg_mar20"
+cfg$gms$s21_seasonal_eu <- 1
 
 
 # 50_nr_soil_budget

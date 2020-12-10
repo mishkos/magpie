@@ -9,8 +9,11 @@ $setglobal c21_trade_liberalization  l909090r808080
 *   options are "regionalized" and "globalized" and "fragmented"
 
 scalars
-  s21_trade_tariff Trade tariff switch (1=on 0=off)  (1)                   / 1 /
+  s21_trade_tariff Trade tariff switch (1=on 0=off)  (1)                        / 1 /
+  s21_seasonal_eu Trade tariff in EU on fruits and vegetables (1=on 0=off) (1)  / 0 /
 ;
+
+
 
 table f21_trade_bal_reduction(t_all,trade_groups21,trade_regime21) Share of inelastic trade pool (1)
 $ondelim
