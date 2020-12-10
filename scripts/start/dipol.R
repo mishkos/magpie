@@ -58,7 +58,7 @@ cfg$input  <- buildInputVector()
 cfg$gms$s80_maxiter <- 5
 cfg$output <- c("rds_report")
 cfg$results_folder <- paste0("output/dipol/:title::date:")
-title_flag <- ""
+title_flag <- "_ndc"
 
 cfg$gms$c_timesteps <- "coup2100"
 # cfg$gms$c_timesteps <- 1
@@ -70,42 +70,43 @@ cfg$gms$c_timesteps <- "coup2100"
 # start_run(cfg,codeCheck=FALSE)
 # calib     <- magpie4::submitCalibration(name = "calibration_dipol")
 
-title_flag <- ""
 
 # DIPOL_1
-cfg$title       <- paste("DIPOL_1_", title_flag)
-cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_1"))
+cfg$title       <- paste0("DIPOL_1", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_1"))
 cfg$recalibrate <- FALSE
 start_run(cfg,codeCheck=FALSE)
 
+cfg$force_download <- FALSE
+
 # DIPOL_2
-cfg$title       <- paste("DIPOL_2_", title_flag)
-cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_2"))
+cfg$title       <- paste0("DIPOL_2", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_2"))
 cfg$recalibrate <- FALSE
 start_run(cfg,codeCheck=FALSE)
 
 # DIPOL_3
-cfg$title       <- paste("DIPOL_3_", title_flag)
-cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_3"))
+cfg$title       <- paste0("DIPOL_3", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_3"))
 cfg$recalibrate <- FALSE
 start_run(cfg,codeCheck=FALSE)
 
 # DIPOL_4
-cfg$title       <- paste("DIPOL_4_", title_flag)
-cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_4"))
+cfg$title       <- paste0("DIPOL_4", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_4"))
 # file.copy("/p/tmp/merfort/DIPOL/coupled/magpie_release_canditate/modules/56_ghg_policy/input/f56_pollutant_prices_coupling.cs3","modules/56_ghg_policy/input/f56_pollutant_prices_coupling.cs3")
 # cfg$gms$c56_pollutant_prices <- "coupling"
 cfg$recalibrate <- FALSE
 start_run(cfg,codeCheck=FALSE)
 
 # DIPOL_5
-cfg$title       <- paste("DIPOL_5_", title_flag)
-cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_5"))
+cfg$title       <- paste0("DIPOL_5", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_5"))
 cfg$recalibrate <- FALSE
 start_run(cfg,codeCheck=FALSE)
 
 # DIPOL_6
-cfg$title       <- paste("DIPOL_6_", title_flag)
-cfg             <- setScenario(cfg,c("SSP2","NPI","DIPOL_6"))
+cfg$title       <- paste0("DIPOL_6", title_flag)
+cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_6"))
 cfg$recalibrate <- FALSE
 start_run(cfg,codeCheck=FALSE)
