@@ -58,7 +58,7 @@ cfg$input  <- buildInputVector()
 cfg$gms$s80_maxiter <- 5
 cfg$output <- c("rds_report")
 cfg$results_folder <- paste0("output/dipol/:title::date:")
-title_flag <- "_ndc"
+title_flag <- "_ndc_marginEU"
 
 cfg$gms$c_timesteps <- "coup2100"
 # cfg$gms$c_timesteps <- 1
@@ -71,19 +71,19 @@ cfg$gms$c_timesteps <- "coup2100"
 # calib     <- magpie4::submitCalibration(name = "calibration_dipol")
 
 
-# DIPOL_1
-cfg$title       <- paste0("DIPOL_1", title_flag)
-cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_1"))
-cfg$recalibrate <- FALSE
-start_run(cfg,codeCheck=FALSE)
-
-cfg$force_download <- FALSE
-
-# DIPOL_2
-cfg$title       <- paste0("DIPOL_2", title_flag)
-cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_2"))
-cfg$recalibrate <- FALSE
-start_run(cfg,codeCheck=FALSE)
+# # DIPOL_1
+# cfg$title       <- paste0("DIPOL_1", title_flag)
+# cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_1"))
+# cfg$recalibrate <- FALSE
+# start_run(cfg,codeCheck=FALSE)
+#
+# cfg$force_download <- FALSE
+#
+# # DIPOL_2
+# cfg$title       <- paste0("DIPOL_2", title_flag)
+# cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_2"))
+# cfg$recalibrate <- FALSE
+# start_run(cfg,codeCheck=FALSE)
 
 # DIPOL_3
 cfg$title       <- paste0("DIPOL_3", title_flag)

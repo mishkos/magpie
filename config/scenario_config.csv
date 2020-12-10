@@ -12,6 +12,7 @@ c15_EAT_scen;;;;;;;;FLX;;;;;;;FLX;;;;;;FLX;;FLX;;;
 scen_countries15;;;;;;;;;;;;;;;;;;;;;AUT,BEL,BGR,HRV,CYP,CZE,DNK,EST,FIN,FRA,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,ROU,SVK,SVN,ESP,SWE,GBR;;AUT,BEL,BGR,HRV,CYP,CZE,DNK,EST,FIN,FRA,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,ROU,SVK,SVN,ESP,SWE,GBR;;;
 c21_trade_liberalization;;;l908080r807070;l909090r808080;l909595r809090;l908080r807070;l908080r807070;l908080r807070;;;;;;;;l908080r807070;l909090r808080;l909595r809090;l908080r807070;l908080r807070;;;;;;
 s21_seasonal_eu;;;;;;;;;;;;;;;;;;;;;1;;1;;;
+s21_margin_eu;;;;;;;;;;;;;;;;;;;;;;;0.5;0.5;;0.5
 s32_max_aff_area;;;Inf;Inf;Inf;Inf;Inf;500;;;;;;;;Inf;Inf;Inf;Inf;Inf;;;500;500;;500
 c32_aff_mask;;;noboreal;noboreal;noboreal;noboreal;noboreal;onlytropical;;;;;;;;noboreal;noboreal;noboreal;noboreal;noboreal;;;;;;
 c32_aff_policy;;;;;;;;;none;npi;ndc;;;;;;;;;;;;;;;

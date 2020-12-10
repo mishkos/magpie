@@ -56,11 +56,11 @@ cfg$results_folder <- paste0("output/dipol/:title::date:")
 cfg$gms$c_timesteps <- 1
 
 
-cfg       <- setScenario(cfg,c("SSP2","NPI","DIPOL_1"))
+cfg       <- setScenario(cfg,c("SSP2","NPI","DIPOL_6"))
 cfg$input <- buildInputVector()
 # 42_water_demand
 # cfg$gms$water_demand<- "agr_sector_reg_mar20"
-# cfg$gms$s21_seasonal_eu <- 1
+# cfg$gms$s21_margin_eu <- 0.5
 
 
 # 50_nr_soil_budget

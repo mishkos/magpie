@@ -10,6 +10,7 @@ i21_trade_bal_reduction(t_all,k_trade)=f21_trade_bal_reduction(t_all,"easytrade"
 i21_trade_bal_reduction(t_all,k_hardtrade21)=f21_trade_bal_reduction(t_all,"hardtrade","%c21_trade_liberalization%");
 
 i21_trade_margin(i2,k_trade) = f21_trade_margin(i2,k_trade);
+i21_trade_margin("EUR",k_trade) = i21_trade_margin("EUR",k_trade)*(1+s21_margin_eu);
 
 if ((s21_seasonal_eu=1),
     f21_trade_tariff("EUR","others") = 999999;
