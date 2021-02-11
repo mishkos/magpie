@@ -82,10 +82,10 @@ cfg$gms$c_timesteps <- "coup2100"
 # start_run(cfg,codeCheck=FALSE)
 
 # Peatland Test
-cfg$title                     <- "peatland_all"
+cfg$title                     <- "peatland_eu"
 cfg                           <- setScenario(cfg,c("SSP2","NDC"))
 cfg$gms$s56_peatland_policy   <- 1
-# cfg$gms$peatland_policy_countries56  <- "AUT,BEL,BGR,HRV,CYP,CZE,DNK,EST,FIN,FRA,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,ROU,SVK,SVN,ESP,SWE,GBR"
+cfg$gms$peatland_policy_countries56  <- "ALA,AUT,BEL,BGR,HRV,CYP,CZE,DNK,EST,FIN,FRA,FRO,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,ROU,SVK,SVN,ESP,SWE,GBR,GGY,GIB,IMN,JEY,"
 cfg$gms$peatland              <- "on"
 cfg$gms$s58_rewetting_switch  <- Inf
 start_run(cfg,codeCheck=FALSE)
