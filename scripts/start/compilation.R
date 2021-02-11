@@ -56,19 +56,14 @@ cfg$results_folder <- paste0("output/dipol/:title::date:")
 cfg$gms$c_timesteps <- 1
 
 
-cfg       <- setScenario(cfg,c("SSP2","NPI","DIPOL_6"))
+cfg       <- setScenario(cfg,c("SSP2","NDC"))
 cfg$input <- buildInputVector()
-# 42_water_demand
-# cfg$gms$water_demand<- "agr_sector_reg_mar20"
-# cfg$gms$s21_margin_eu <- 0.5
 
+cfg$gms$s56_peatland_policy   <- 1
+cfg$gms$peatland              <- "on"
+cfg$gms$s58_rewetting_switch  <- Inf
+# cfg$gms$peatland_policy_countries56  <- "AUT,BEL,BGR,HRV,CYP,CZE,DNK,EST,FIN,FRA,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,ROU,SVK,SVN,ESP,SWE,GBR"
 
-# 50_nr_soil_budget
-# cfg$gms$c50_scen_neff <- "neff60_eur85_starty2020"
-# cfg$gms$c50_scen_neff_pasture <- "constant_eur85"
-
-
-# cfg$gms$c55_scen_conf <- "ssp2"
 
 # Downlaod
 if(cfg$force_download){

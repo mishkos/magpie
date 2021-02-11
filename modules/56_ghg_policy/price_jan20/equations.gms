@@ -130,5 +130,7 @@ q56_cell_to_reg(i2,pollutants,emis_source) ..
                  vm_peatland_emis(j2) *
                  s56_peatland_policy *
                  sum((ct,cell(i2,j2)),
+                 p56_region_peatland_policy_shr(ct,i2)) * 
+                 sum((ct,cell(i2,j2)),
                  im_pollutant_prices(ct,i2,"co2_c")*12/44
                  );

@@ -106,3 +106,11 @@ p56_c_price_aff(t_all,i,ac)$(ac.off >= s56_c_price_exp_aff/5) = sum(ac_exp, p56_
 p56_c_price_aff(t_all,i,ac)$(m_year(t_all)<s56_ghgprice_start) = 0;
 
 display p56_c_price_aff;
+
+******* Selective peatland protection policye
+p56_peatland_country_dummy(iso) = 0;
+p56_peatland_country_dummy(peatland_policy_countries56) = 1;
+* Because MAgPIE is not run at country-level, but at region level, a region
+* share is calculated that translates the countries' influence to regional level.
+* Countries are weighted by their population size.
+p56_region_peatland_policy_shr(t_all,i) = sum(i_to_iso(i,iso), p56_peatland_country_dummy(iso) * im_pop_iso(t_all,iso)) / sum(i_to_iso(i,iso), im_pop_iso(t_all,iso));

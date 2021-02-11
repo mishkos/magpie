@@ -51,7 +51,7 @@ buildInputVector <- function(regionmapping   = "H12",
 # EU28 <- "AUT, BEL, BGR, HRV, CYP, CZE, DNK, EST, FIN, FRA, DEU, GRC, HUN, IRL, ITA, LVA, LTU, LUX, MLT, NLD, POL, PRT, ROU, SVK, SVN, ESP, SWE, GBR"
 
 cfg$recalibrate <- FALSE
-cfg$force_download <- TRUE
+cfg$force_download <- FALSE
 
 # cfg$input  <- buildInputVector()
 
