@@ -64,16 +64,30 @@ cfg$gms$c_timesteps <- "coup2100"
 # cfg$gms$c_timesteps <- 1
 
 # SSP2
-cfg$title <- "ssp2_default"
-cfg       <- setScenario(cfg,c("SSP2","NDC"))
-# cfg$input <- buildInputVector()
-start_run(cfg,codeCheck=FALSE)
+# cfg$title <- "ssp2_default"
+# cfg       <- setScenario(cfg,c("SSP2","NDC"))
+# # cfg$input <- buildInputVector()
+# start_run(cfg,codeCheck=FALSE)
 # calib     <- magpie4::submitCalibration(name = "calibration_dipol")
 
 # Test
-cfg$title <- "ssp2_marginEU"
-cfg       <- setScenario(cfg,c("SSP2","NDC"))
-cfg$gms$s21_margin_eu <- 1
+# cfg$title <- "ssp2_marginEU"
+# cfg       <- setScenario(cfg,c("SSP2","NDC"))
+# cfg$gms$s21_margin_eu <- 1
+# start_run(cfg,codeCheck=FALSE)
+
+# cfg$title <- "ssp2_seasonalEU"
+# cfg       <- setScenario(cfg,c("SSP2","NDC"))
+# cfg$gms$s21_seasonal_eu <- 1
+# start_run(cfg,codeCheck=FALSE)
+
+# Peatland Test
+cfg$title                     <- "peatland_all"
+cfg                           <- setScenario(cfg,c("SSP2","NDC"))
+cfg$gms$s56_peatland_policy   <- 1
+# cfg$gms$peatland_policy_countries56  <- "AUT,BEL,BGR,HRV,CYP,CZE,DNK,EST,FIN,FRA,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,ROU,SVK,SVN,ESP,SWE,GBR"
+cfg$gms$peatland              <- "on"
+cfg$gms$s58_rewetting_switch  <- Inf
 start_run(cfg,codeCheck=FALSE)
 
 # # DIPOL_1
