@@ -6,6 +6,12 @@
 *** |  Contact: magpie@pik-potsdam.de
 
 sets
+
+   iter15 iterations between food demand model and magpie
+   /iter1*iter10/   
+   curr_iter15(iter15)  currently active iteration
+   prev_iter15(iter15)     last active iteration
+
    underaged15(age) Group of underaged age classes
    /0--4,5--9,10--14/
 
@@ -144,9 +150,9 @@ sets
 
   fadeoutscen15  Food substitution scenarios including functional forms with targets and transition periods
        / constant,
-         lin_zero_10_50, lin_zero_20_50, lin_zero_20_30, lin_50pc_20_50, lin_50pc_20_50_extend65, lin_50pc_20_50_extend80,
+         lin_zero_10_50, lin_zero_20_50, lin_zero_20_30, lin_zero_20_70, lin_50pc_20_50, lin_50pc_20_50_extend65, lin_50pc_20_50_extend80,
          lin_50pc_10_50_extend90, lin_75pc_10_50_extend90, lin_80pc_20_50, lin_80pc_20_50_extend95, lin_90pc_20_50_extend95,
-	 lin_99-98-90pc_20_50-60-100 /
+	 lin_99-98-90pc_20_50-60-100, sigmoid_20pc_20_50 /
 
   t_scen15(t_all) Target years for transition to exogenous scenario diets
        / y2010, y2030, y2050 /
