@@ -1,4 +1,4 @@
-*** |  (C) 2008-2020 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2021 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -12,6 +12,7 @@ scalars
   s21_trade_tariff Trade tariff switch (1=on 0=off)  (1)                        / 1 /
   s21_seasonal_eu Trade tariff in EU on fruits and vegetables (1=on 0=off) (1)  / 0 /
   s21_margin_eu higher Trade margin for the EU products (range 0 to 1) (1)      / 0.5 /
+  s21_trade_bal_damper Fraction to ease self sufficiency pool trade for roundwood /0.75/
 ;
 
 
