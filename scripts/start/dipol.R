@@ -24,11 +24,11 @@ buildInputVector <- function(regionmapping   = "H12",
                              co2             = "co2",
                              climate_model   = "IPSL_CM5A_LR",
                              resolution      = "c200",
-                             archive_rev     = "48",
-                             madrat_rev      = "4.52",
-                             validation_rev  = "4.52",
-			                       calibration     = "calibration_calibration_dipol_16Mar20.tgz",
-                             additional_data = "additional_data_rev3.85.tgz",
+                             archive_rev     = "52",
+                             madrat_rev      = "4.58",
+                             validation_rev  = "4.58",
+			                       calibration     = "calibration_H12_c200_23Feb21.tgz",
+                             additional_data = "additional_data_rev3.99.tgz",
                              patch_inputdata = "dipol_inputdata.tgz") {
   mappings <- c(H11       = "8a828c6ed5004e77d1ba2025e8ea2261",
                 H12       = "690d3718e151be1b450b394c1064b1c5",
@@ -51,24 +51,68 @@ buildInputVector <- function(regionmapping   = "H12",
 # EU28 <- "AUT, BEL, BGR, HRV, CYP, CZE, DNK, EST, FIN, FRA, DEU, GRC, HUN, IRL, ITA, LVA, LTU, LUX, MLT, NLD, POL, PRT, ROU, SVK, SVN, ESP, SWE, GBR"
 
 cfg$recalibrate <- FALSE
-cfg$force_download <- FALSE
+cfg$force_download <- TRUE
 
 # cfg$input  <- buildInputVector()
 
 cfg$gms$s80_maxiter <- 5
 cfg$output <- c("rds_report")
 cfg$results_folder <- paste0("output/dipol/:title::date:")
-title_flag <- "_marginEU"
+title_flag <- ""
 
 cfg$gms$c_timesteps <- "coup2100"
+cfg$gms$c_timesteps <- "5year2050"
 # cfg$gms$c_timesteps <- 1
 
 # SSP2
-# cfg$title <- "ssp2_default"
-# cfg       <- setScenario(cfg,c("SSP2","NDC"))
-# # cfg$input <- buildInputVector()
-# start_run(cfg,codeCheck=FALSE)
+cfg$title <- "ssp2_default_forestryEndo"
+cfg       <- setScenario(cfg,c("SSP2","NDC","ForestryEndo"))
+start_run(cfg,codeCheck=FALSE)
 # calib     <- magpie4::submitCalibration(name = "calibration_dipol")
+
+# Irrigation water efficiency
+cfg$title <- "irrig_eff"
+cfg       <- setScenario(cfg,c("SSP2","NDC","ForestryEndo"))
+cfg$gms$water_demand <- "agr_sector_reg_mar20"
+start_run(cfg,codeCheck=FALSE)
+cfg$gms$water_demand <- "agr_sector_aug13"
+
+# Nitrogen eff cropland
+cfg$title <- "nitro_eff_cpl"
+cfg       <- setScenario(cfg,c("SSP2","NDC","ForestryEndo"))
+cfg$gms$c50_scen_neff <- "neff60_eur85_starty2020"
+start_run(cfg,codeCheck=FALSE)
+cfg$gms$c50_scen_neff <- "neff60_60_starty2010"
+
+# Nitrogen eff cropland and pasture 
+cfg$title <- "nitro_eff_cpl_pas"
+cfg       <- setScenario(cfg,c("SSP2","NDC","ForestryEndo"))
+cfg$gms$c50_scen_neff <- "neff60_eur85_starty2020"
+cfg$gms$c50_scen_neff_pasture <- "constant_eur85"
+start_run(cfg,codeCheck=FALSE)
+cfg$gms$c50_scen_neff <- "neff60_60_starty2010"
+cfg$gms$c50_scen_neff_pasture <- "constant"
+
+# Methan pille
+cfg$title <- "methan"
+cfg       <- setScenario(cfg,c("SSP2","NDC","ForestryEndo"))
+cfg$gms$c55_scen_conf <- "dipol"
+start_run(cfg,codeCheck=FALSE)
+cfg$gms$c55_scen_conf <- "ssp2"
+
+# Diets
+cfg$title <- "diets"
+cfg       <- setScenario(cfg,c("SSP2","NDC","ForestryEndo"))
+cfg$gms$s15_exo_waste <- 1
+cfg$gms$s15_waste_scen <- 1.2
+cfg$gms$s15_exo_diet <- 1
+cfg$gms$c15_kcal_scen <- "healthy_BMI"
+cfg$gms$c15_EAT_scen <- "FLX"
+cfg$gms$scen_countries15 <- "AUT,BEL,BGR,HRV,CYP,CZE,DNK,EST,FIN,FRA,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,ROU,SVK,SVN,ESP,SWE,GBR"
+start_run(cfg,codeCheck=FALSE)
+
+
+
 
 # Test
 # cfg$title <- "ssp2_marginEU"
@@ -81,23 +125,23 @@ cfg$gms$c_timesteps <- "coup2100"
 # cfg$gms$s21_seasonal_eu <- 1
 # start_run(cfg,codeCheck=FALSE)
 
-# Peatland Test
-cfg$title                     <- "peatland_eu"
-cfg                           <- setScenario(cfg,c("SSP2","NDC"))
-cfg$gms$s56_peatland_policy   <- 1
-cfg$gms$peatland_policy_countries56  <- "ALA,AUT,BEL,BGR,HRV,CYP,CZE,DNK,EST,FIN,FRA,FRO,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,ROU,SVK,SVN,ESP,SWE,GBR,GGY,GIB,IMN,JEY,"
-cfg$gms$peatland              <- "on"
-cfg$gms$s58_rewetting_switch  <- Inf
-start_run(cfg,codeCheck=FALSE)
+# # Peatland Test
+# cfg$title                     <- "peatland_eu"
+# cfg                           <- setScenario(cfg,c("SSP2","NDC"))
+# cfg$gms$s56_peatland_policy   <- 1
+# cfg$gms$peatland_policy_countries56  <- "ALA,AUT,BEL,BGR,HRV,CYP,CZE,DNK,EST,FIN,FRA,FRO,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,ROU,SVK,SVN,ESP,SWE,GBR,GGY,GIB,IMN,JEY,"
+# cfg$gms$peatland              <- "on"
+# cfg$gms$s58_rewetting_switch  <- Inf
+# start_run(cfg,codeCheck=FALSE)
 
 # # DIPOL_1
 # cfg$title       <- paste0("DIPOL_1", title_flag)
-# cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_1"))
+# cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_1","ForestryEndo"))
 # cfg$recalibrate <- FALSE
 # start_run(cfg,codeCheck=FALSE)
-#
+
 # cfg$force_download <- FALSE
-#
+
 # # DIPOL_2
 # cfg$title       <- paste0("DIPOL_2", title_flag)
 # cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_2"))
@@ -109,7 +153,7 @@ start_run(cfg,codeCheck=FALSE)
 # cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_3"))
 # cfg$recalibrate <- FALSE
 # start_run(cfg,codeCheck=FALSE)
-#
+
 # # DIPOL_4
 # cfg$title       <- paste0("DIPOL_4", title_flag)
 # cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_4"))
@@ -117,13 +161,13 @@ start_run(cfg,codeCheck=FALSE)
 # # cfg$gms$c56_pollutant_prices <- "coupling"
 # cfg$recalibrate <- FALSE
 # start_run(cfg,codeCheck=FALSE)
-#
+
 # # DIPOL_5
 # cfg$title       <- paste0("DIPOL_5", title_flag)
 # cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_5"))
 # cfg$recalibrate <- FALSE
 # start_run(cfg,codeCheck=FALSE)
-#
+
 # # DIPOL_6
 # cfg$title       <- paste0("DIPOL_6", title_flag)
 # cfg             <- setScenario(cfg,c("SSP2","NDC","DIPOL_6"))

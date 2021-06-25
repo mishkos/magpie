@@ -38,7 +38,7 @@ $setglobal c15_EAT_scen  FLX
 *   options:   BMK, FLX, PSC, VEG, VGN, FLX_hmilk, FLX_hredmeat
 
 
-scalar s15_elastic_demand  Elastic demand switch (1=elastic 0=exogenous) (1) / 1 /;
+scalar s15_elastic_demand  Elastic demand switch (1=elastic 0=exogenous) (1) / 0 /;
 
 scalar s15_calibrate Calibration switch (1=calibrated 0=pure regression outcomes) (1) / 1 /;
 * only for per-capita calories, not for e.g. calibration of transformation parameters between per-capita calories in dm
@@ -47,11 +47,11 @@ scalar s15_maxiter Scalar defining maximum number of iterations (1) / 5 /;
 
 scalar s15_convergence Convergence criterion (1) / 0.005 /;
 
-scalar s15_exo_waste Switch for transition towards exogenous food waste scenario (1)  / 0 /;
+scalar s15_exo_waste Switch for transition towards exogenous food waste scenario (1)  / 1 /;
 
 scalar s15_waste_scen Scenario target for the ratio between food demand and intake (1)  / 1.2 /;
 
-scalar s15_exo_diet Switch for transition towards exogenous diet scenario (1)  / 0 /;
+scalar s15_exo_diet Switch for transition towards exogenous diet scenario (1)  / 1 /;
 
 scalar s15_rum_share_fadeout_india_strong 	switch for stronger ruminant fadeout in India (binary) / 1 /;
 
