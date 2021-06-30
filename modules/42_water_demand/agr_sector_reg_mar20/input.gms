@@ -9,7 +9,7 @@ scalars
 
 s42_reserved_fraction  Fraction of available water that is reserved for industry electricity and domestic use (1) / 0.5 /
 
-s42_irrig_eff_scenario     Scenario for irrigation efficiency     (1)       / 2 /
+s42_irrig_eff_scenario     Scenario for irrigation efficiency     (1)       / 1 /
 *                                      1: global static value
 *                                      2: regional static values from CS
 *                                      3: gdp driven increase
@@ -70,8 +70,11 @@ $include "./modules/42_water_demand/input/f42_env_flow_policy.cs3"
 $offdelim
 ;
 
-table f42_irrigation_efficiency(t_all,i)              Value of irrigation efficiency       (1)
+$setglobal c42_irrig_eff_scen  uniform
+
+parameter f42_irrigation_efficiency(t_all,i,scen42_irr_eff)              Value of irrigation efficiency       (1)
+/
 $ondelim
-$include "./modules/42_water_demand/input/f42_irrigation_efficiency.csv"
+$include "./modules/42_water_demand/input/f42_irrigation_efficiency.cs4"
 $offdelim
-;
+/;

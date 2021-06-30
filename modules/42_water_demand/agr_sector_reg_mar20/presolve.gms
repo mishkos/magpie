@@ -39,7 +39,7 @@ vm_watdem.fx("ecosystem",j) = sum(cell(i,j), i42_env_flows_base(t,j) * (1-ic42_e
 
 * irrigation efficiency
 if((s42_irrig_eff_scenario = 1),
- i42_irrig_eff(t,i) = f42_irrigation_efficiency(t,i);
+ i42_irrig_eff(t,i) = f42_irrigation_efficiency(t,i,"%c42_irrig_eff_scen%");
 Elseif (s42_irrig_eff_scenario=2),
  i42_irrig_eff(t,i) = 1/(1+2.718282**((-22160-im_gdp_pc_mer("y1995",i))/37767));
 Elseif (s42_irrig_eff_scenario=3),

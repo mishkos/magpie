@@ -25,11 +25,11 @@ buildInputVector <- function(regionmapping   = "H12",
                              co2             = "co2",
                              climate_model   = "IPSL_CM5A_LR",
                              resolution      = "c200",
-                             archive_rev     = "48",
-                             madrat_rev      = "4.52",
-                             validation_rev  = "4.52",
-			                       calibration     = "calibration_calibration_dipol_16Mar20.tgz",
-                             additional_data = "additional_data_rev3.85.tgz",
+                             archive_rev     = "52",
+                             madrat_rev      = "4.58",
+                             validation_rev  = "4.58",
+			                       calibration     = "calibration_H12_c200_23Feb21.tgz",
+                             additional_data = "additional_data_rev3.99.tgz",
                              patch_inputdata = "dipol_inputdata.tgz") {
   mappings <- c(H11       = "8a828c6ed5004e77d1ba2025e8ea2261",
                 H12       = "690d3718e151be1b450b394c1064b1c5",
@@ -51,7 +51,7 @@ cfg$force_download <- FALSE
 
 cfg$gms$s80_maxiter <- 5
 cfg$output <- NULL
-cfg$results_folder <- paste0("output/dipol/:title::date:")
+cfg$results_folder <- paste0("output/:title::date:")
 
 cfg$gms$c_timesteps <- 1
 
@@ -59,9 +59,13 @@ cfg$gms$c_timesteps <- 1
 cfg       <- setScenario(cfg,c("SSP2","NDC"))
 cfg$input <- buildInputVector()
 
-cfg$gms$s56_peatland_policy   <- 1
-cfg$gms$peatland              <- "on"
-cfg$gms$s58_rewetting_switch  <- Inf
+cfg$gms$water_demand<- "agr_sector_reg_mar20"
+cfg$gms$c42_irrig_eff_scen <- "uniform"
+cfg$gms$s42_irrig_eff_scenario <- 1
+
+# cfg$gms$s56_peatland_policy   <- 1
+# cfg$gms$peatland              <- "on"
+# cfg$gms$s58_rewetting_switch  <- Inf
 # cfg$gms$peatland_policy_countries56  <- "AUT,BEL,BGR,HRV,CYP,CZE,DNK,EST,FIN,FRA,DEU,GRC,HUN,IRL,ITA,LVA,LTU,LUX,MLT,NLD,POL,PRT,ROU,SVK,SVN,ESP,SWE,GBR"
 
 

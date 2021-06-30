@@ -6,11 +6,14 @@
 *** |  Contact: magpie@pik-potsdam.de
 
 sets
-   watdem_exo(wat_dem) Exogenous water demands 
+   watdem_exo(wat_dem) Exogenous water demands
    / industry, electricity, domestic, ecosystem /
 
    scen42 Environmental Flow Policy (EFP)
    / off, on /
+
+   scen42_irr_eff Scenario for irrigation efficiency
+   / dipol, uniform /
 
    scen42_to_dev(scen42,dev) Mapping between EFP and economic development status
    /  off . (lic, mic)
