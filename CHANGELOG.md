@@ -36,7 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **52_carbon/35_natveg/32_forestry** Retired workarounds that are no longer needed once the wood calibration is separated from the carbon growth curve: the k-bisection growth-curve calibration, the "natural-origin" secondary-forest carbon blend and harvest floor, and the young-secondary-forest wood-harvest loophole.
 
 ### fixed
--
+- **scripts/npi_ndc** NPI/NDC avoided deforestation and other land conversion bounds now follow the policy targets: cell-to-country matching failed for the current `x.y.iso` cell names, so targets were ignored and the bound was frozen at the last observed stock. The minimum stock is now the last observed stock minus the cumulative allowed loss, `(1 - target share) * reference gross loss rate`, and the NDC trajectory continues from the NPI trajectory after 2025
 
 
 ## [4.14.1] - 2026-08-25
