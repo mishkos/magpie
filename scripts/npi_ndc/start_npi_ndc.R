@@ -23,6 +23,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
                          out_ad_file     = "npi_ndc_ad_aolc_pol.cs3",
                          out_ad_cell_file = "npi_ndc_ad_aolc_pol_0.5.mz",
                          out_aff_file    = "npi_ndc_aff_pol.cs3",
+                         out_aff_cell_file = "npi_ndc_aff_pol_0.5.mz",
                          carbon_stock_file = "../../modules/52_carbon/input/lpj_carbon_stocks_0.5.mz") {
 
   require(magclass)
@@ -234,7 +235,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
   addtable(npi_aff[,c(-2,-3)])
   npi_aff <- calc_policy(npi_aff, land_stock, pol_type="aff", pol_mapping=pol_mapping,
                          weight=affWeight,
-                         map_file=map_file)
+                         map_file=map_file, level="cell")
   getNames(npi_aff) <- "npi"
   cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
 
@@ -247,7 +248,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
   addtable(ndc_aff[,c(-2,-3)])
   ndc_aff <- calc_policy(ndc_aff, land_stock, pol_type="aff", pol_mapping=pol_mapping,
                          weight=affWeight,
-                         map_file=map_file)
+                         map_file=map_file, level="cell")
   getNames(ndc_aff) <- "ndc"
   #set all values before 2015 to NPI values; copy the values til 2010 from the NPI data
   ndc_aff[,which(getYears(ndc_aff,as.integer=TRUE)<=2025),] <-
@@ -303,7 +304,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
     addtable(ndcdelay_def[,c(-2,-3)])
     ndcdelay_aff <- calc_policy(ndcdelay_def, land_stock, pol_type="aff", pol_mapping=pol_mapping,
                                 weight=affWeight,
-                                map_file=map_file)
+                                map_file=map_file, level="cell")
     getNames(ndcdelay_aff) <- "ndcdelay"
     # mirror ndc: years <= 2025 follow the NPI baseline
     ndcdelay_aff[,which(getYears(ndcdelay_aff,as.integer=TRUE)<=2025),] <-
@@ -348,7 +349,8 @@ calc_NPI_NDC <- function(policyregions = "iso",
                           pol_mapping     = pol_mapping,
                           potential_stock = potential_forest,
                           weight          = affexp_weight,
-                          map_file        = map_file)
+                          map_file        = map_file,
+                          level           = "cell")
     getNames(affexp) <- "affexp"
 
     # Build affexp on top of npi_aff baseline, mirroring how ndc_aff uses npi_aff:
@@ -372,10 +374,17 @@ calc_NPI_NDC <- function(policyregions = "iso",
   aff_list <- list(none_aff_pol, npi_aff, ndc_aff)
   if (!is.null(affexp))       aff_list <- c(aff_list, list(affexp))
   if (!is.null(ndcdelay_aff)) aff_list <- c(aff_list, list(ndcdelay_aff))
-  aff_pol <- do.call(mbind, aff_list)
+  aff_pol_cell <- do.call(mbind, aff_list)
+  aff_pol <- madrat::toolAggregate(aff_pol_cell, readRDS(map_file))
   afffiles <- paste0(outfolder_aff, out_aff_file)
   write.magpie(round(aff_pol, 6), afffiles[1])
   if(length(afffiles) > 1) for (i in 2:length(afffiles)) file.copy(afffiles[1],afffiles[i], overwrite=TRUE)
+  # afforestation targets at 0.5 degree, e.g. to place the policy afforestation in the disaggregation
+  affcellfiles <- paste0(outfolder_aff, out_aff_cell_file)
+  write.magpie(round(aff_pol_cell, 6), affcellfiles[1])
+  if (length(affcellfiles) > 1) {
+    for (i in 2:length(affcellfiles)) file.copy(affcellfiles[1], affcellfiles[i], overwrite=TRUE)
+  }
 }
 
 
