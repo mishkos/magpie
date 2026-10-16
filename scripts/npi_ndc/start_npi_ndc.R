@@ -21,6 +21,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
                          outfolder_ad_aolc   = c("policies/","../../modules/35_natveg/input/"),
                          outfolder_aff   = c("policies/","../../modules/32_forestry/input/"),
                          out_ad_file     = "npi_ndc_ad_aolc_pol.cs3",
+                         out_ad_cell_file = "npi_ndc_ad_aolc_pol_0.5.mz",
                          out_aff_file    = "npi_ndc_aff_pol.cs3",
                          carbon_stock_file = "../../modules/52_carbon/input/lpj_carbon_stocks_0.5.mz") {
 
@@ -138,7 +139,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
   addtable(npi_ad[,c(-2,-3)])
   npi_ad_def <- npi_ad
   npi_ad <- calc_policy(npi_ad, forest_stock, pol_type="ad", pol_mapping=pol_mapping,
-                        map_file=map_file)
+                        map_file=map_file, level="cell")
   getNames(npi_ad) <- "npi.forest"
   cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
 
@@ -150,7 +151,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
   ndc_ad <- droplevels(subset(pol_def, policy=="ndc" & landpool=="forest"))
   addtable(ndc_ad[,c(-2,-3)])
   ndc_ad <- calc_policy(ndc_ad, forest_stock, pol_type="ad", pol_mapping=pol_mapping,
-                        map_file=map_file, prior=npi_ad_def)
+                        map_file=map_file, prior=npi_ad_def, level="cell")
   getNames(ndc_ad) <- "ndc.forest"
   #Set all values before 2015 to NPI values; copy the values til 2010 from the NPI data
   ndc_ad[,which(getYears(ndc_ad,as.integer=TRUE)<=2025),] <-
@@ -173,7 +174,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
   addtable(npi_aolc[,c(-2,-3)])
   npi_aolc_def <- npi_aolc
   npi_aolc <- calc_policy(npi_aolc, land_stock[,,"other"], pol_type="ad",
-                          pol_mapping=pol_mapping, map_file=map_file)
+                          pol_mapping=pol_mapping, map_file=map_file, level="cell")
   getNames(npi_aolc) <- "npi.other"
   cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
 
@@ -185,7 +186,8 @@ calc_NPI_NDC <- function(policyregions = "iso",
   ndc_aolc <- droplevels(subset(pol_def, policy=="ndc" & landpool=="other"))
   addtable(ndc_aolc[,c(-2,-3)])
   ndc_aolc <- calc_policy(ndc_aolc, land_stock[,,"other"], pol_type="ad",
-                          pol_mapping=pol_mapping, map_file=map_file, prior=npi_aolc_def)
+                          pol_mapping=pol_mapping, map_file=map_file, prior=npi_aolc_def,
+                          level="cell")
   getNames(ndc_aolc) <- "ndc.other"
   #Set all values before 2015 to NPI values; copy the values til 2010 from the NPI data
   ndc_aolc[,which(getYears(ndc_aolc,as.integer=TRUE)<=2025),] <-
@@ -195,12 +197,19 @@ calc_NPI_NDC <- function(policyregions = "iso",
   none_ad_aolc_pol <- mbind(npi_ad,npi_aolc)
   none_ad_aolc_pol[] <- 0
   getNames(none_ad_aolc_pol) <- c("none.forest","none.other")
-  ad_aolc_pol <- mbind(none_ad_aolc_pol,npi_ad,npi_aolc,ndc_ad,ndc_aolc)
+  ad_aolc_pol_cell <- mbind(none_ad_aolc_pol,npi_ad,npi_aolc,ndc_ad,ndc_aolc)
+  ad_aolc_pol <- madrat::toolAggregate(ad_aolc_pol_cell, readRDS(map_file))
 
   adfiles <- paste0(outfolder_ad_aolc, out_ad_file)
   write.magpie(round(ad_aolc_pol, 6), adfiles[1])
   if (length(adfiles) > 1) {
     for (i in 2:length(adfiles)) file.copy(adfiles[1],adfiles[i], overwrite=TRUE)
+  }
+  # minimum stocks at 0.5 degree, e.g. to keep the protected stocks in the disaggregation of the land pools
+  adcellfiles <- paste0(outfolder_ad_aolc, out_ad_cell_file)
+  write.magpie(round(ad_aolc_pol_cell, 6), adcellfiles[1])
+  if (length(adcellfiles) > 1) {
+    for (i in 2:length(adcellfiles)) file.copy(adcellfiles[1], adcellfiles[i], overwrite=TRUE)
   }
   cat(paste0(" (time elapsed: ", format(proc.time()["elapsed"]-ptm, width = 6, nsmall = 2, digits = 2), "s)\n"))
 
@@ -432,10 +441,11 @@ calc_ad_allowed <- function(policy, stock, ly) {
 # prior (ad only): policy definitions (npi) that determine the allowed loss up to switch_year,
 # so that the ndc trajectory continues from the npi trajectory instead of restarting from the
 # observed stock
+# level: "cluster" (default) or "cell" (0.5 degree cells, named as in map_file)
 calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
                         weight=NULL, potential_stock=NULL, 
                         map_file = Sys.glob("../../input/clustermap_rev*.rds"),
-                        prior = NULL, switch_year = 2025) {
+                        prior = NULL, switch_year = 2025, level = "cluster") {
 
   ## For affexp: potential_stock must be provided (country-level potential forest)                          
   if (pol_type == "affexp" && is.null(potential_stock)) {
@@ -594,6 +604,7 @@ calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
   stopifnot(identical(sub("\\.[^.]*$", "", getItems(magpie_policy, dim = 1)),
                       sub("\\.[^.]*$", "", map$cell)))
   getItems(magpie_policy, dim = 1, raw = TRUE) <- map$cell
+  if (level == "cell") return(magpie_policy)
   magpie_policy <- madrat::toolAggregate(magpie_policy, map)
 
   return(magpie_policy)
