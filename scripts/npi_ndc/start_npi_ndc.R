@@ -20,6 +20,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
                          map_file    = Sys.glob("../../input/clustermap_rev*.rds"),
                          outfolder_ad_aolc   = c("policies/","../../modules/35_natveg/input/"),
                          outfolder_aff   = c("policies/","../../modules/32_forestry/input/"),
+                         outfolder_cell  = c("policies/","../../input/"),
                          out_ad_file     = "npi_ndc_ad_aolc_pol.cs3",
                          out_ad_cell_file = "npi_ndc_ad_aolc_pol_0.5.mz",
                          out_aff_file    = "npi_ndc_aff_pol.cs3",
@@ -207,7 +208,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
     for (i in 2:length(adfiles)) file.copy(adfiles[1],adfiles[i], overwrite=TRUE)
   }
   # minimum stocks at 0.5 degree, e.g. to keep the protected stocks in the disaggregation of the land pools
-  adcellfiles <- paste0(outfolder_ad_aolc, out_ad_cell_file)
+  adcellfiles <- paste0(outfolder_cell, out_ad_cell_file)
   write.magpie(round(ad_aolc_pol_cell, 6), adcellfiles[1])
   if (length(adcellfiles) > 1) {
     for (i in 2:length(adcellfiles)) file.copy(adcellfiles[1], adcellfiles[i], overwrite=TRUE)
@@ -380,7 +381,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
   write.magpie(round(aff_pol, 6), afffiles[1])
   if(length(afffiles) > 1) for (i in 2:length(afffiles)) file.copy(afffiles[1],afffiles[i], overwrite=TRUE)
   # afforestation targets at 0.5 degree, e.g. to place the policy afforestation in the disaggregation
-  affcellfiles <- paste0(outfolder_aff, out_aff_cell_file)
+  affcellfiles <- paste0(outfolder_cell, out_aff_cell_file)
   write.magpie(round(aff_pol_cell, 6), affcellfiles[1])
   if (length(affcellfiles) > 1) {
     for (i in 2:length(affcellfiles)) file.copy(affcellfiles[1], affcellfiles[i], overwrite=TRUE)

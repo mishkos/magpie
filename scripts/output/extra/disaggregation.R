@@ -33,6 +33,8 @@ urban_land_hr_file <- file.path(outputdir, "f34_urbanland_0.5.mz")
 wdpa_hr_file <- file.path(outputdir, "wdpa_baseline_0.5.mz")
 consv_prio_hr_file <- file.path(outputdir, "consv_prio_areas_0.5.mz")
 land_consv_hr_out_file <- file.path(outputdir, "cell.conservation_land_0.5.mz")
+npi_ndc_ad_hr_file <- file.path(outputdir, "npi_ndc_ad_aolc_pol_0.5.mz")
+npi_ndc_aff_hr_file <- file.path(outputdir, "npi_ndc_aff_pol_0.5.mz")
 land_hr_out_file <- file.path(outputdir, "cell.land_0.5.mz")
 land_hr_share_out_file <- file.path(outputdir, "cell.land_0.5_share.mz")
 croparea_hr_share_out_file <- file.path(outputdir, "cell.croparea_0.5_share.mz")
@@ -105,6 +107,66 @@ if (length(map_file) > 1) {
   # Disaggregate BII coefficients to grid cell level
   bii_hr <- toolAggregate(x = bii_lr, rel = map_file, from = "cluster", to = "cell")
   return(bii_hr)
+}
+
+# Adds the NPI/NDC policies per cell (scripts/npi_ndc/start_npi_ndc.R) to the conservation land used in the
+# disaggregation, so that the protected stocks and the policy afforestation stay in their cells:
+# minimum forest stock as primforest, then secdforest, each up to the observed stock of the cell (the plantation
+# part of the forest stock is dropped), minimum other land stock as other, afforestation target as forestry.
+# Merged with the conservation land by the maximum per cell and land type. Conservation land and policies cover
+# partly different cells, so the policy land on top of the conservation land is scaled per cluster such that the
+# protected land does not exceed the land pool of the model (landLr).
+.addNpiNdc <- function(consv, adFile, affFile, landHrFile, landLr, map) {
+  if (!file.exists(adFile) || !file.exists(affFile)) {
+    message("NPI/NDC policies at 0.5 degree not found, disaggregation without them")
+    return(consv)
+  }
+  message("Adding NPI/NDC policies to the conservation land for disaggregation")
+  cells <- map$cell
+  years <- if (is.null(consv)) getYears(landLr) else getYears(consv)
+  yr <- as.integer(sub("y", "", years))
+  .pol <- function(file, item, reversal) {
+    x <- setNames(read.magpie(file)[cells, years, item], NULL)
+    x[, yr >= reversal, ] <- 0
+    return(x)
+  }
+  ad <- .pol(adFile, paste0(cfg$gms$c35_ad_policy, ".forest"), as.numeric(cfg$gms$s35_npi_ndc_reversal))
+  aolc <- .pol(adFile, paste0(cfg$gms$c35_aolc_policy, ".other"), as.numeric(cfg$gms$s35_npi_ndc_reversal))
+  aff <- .pol(affFile, cfg$gms$c32_aff_policy, as.numeric(cfg$gms$s32_npi_ndc_reversal))
+
+  # observed stock per cell, constant after the last observed year
+  obs <- read.magpie(landHrFile)[cells, , c("primforest", "secdforest")]
+  obsYr <- getYears(obs, as.integer = TRUE)
+  stopifnot(all(yr[yr <= max(obsYr)] %in% obsYr))
+  obs <- obs[, paste0("y", pmin(yr, max(obsYr))), ]
+  prim <- ad
+  prim[] <- pmin(as.vector(ad), as.vector(obs[, , "primforest"]))
+  secd <- ad
+  secd[] <- pmin(as.vector(ad - prim), as.vector(obs[, , "secdforest"]))
+
+  if (is.null(consv)) {
+    consv <- new.magpie(cells, years, c("forestry", "primforest", "secdforest", "other"), fill = 0,
+                        sets = c("x.y.iso", "year", "data"))
+  }
+  stopifnot(identical(getCells(consv), cells), identical(getYears(consv), years))
+  cl <- match(map$cluster, getItems(landLr, dim = 1))
+  stopifnot(!anyNA(cl))
+  .clusterSum <- function(x) {
+    s <- rowsum(x, cl)
+    out <- matrix(0, nrow = length(getItems(landLr, dim = 1)), ncol = ncol(x))
+    out[as.integer(rownames(s)), ] <- s
+    return(out)
+  }
+  pol <- list(primforest = prim, secdforest = secd, other = aolc, forestry = aff)
+  for (n in names(pol)) {
+    base <- matrix(as.vector(consv[, , n]), nrow = length(cells))
+    add <- pmax(matrix(as.vector(pol[[n]]), nrow = length(cells)) - base, 0)
+    model <- matrix(as.vector(landLr[, years, n]), ncol = length(years))
+    scaling <- pmin(pmax(model - .clusterSum(base), 0) / .clusterSum(add), 1)
+    scaling[is.na(scaling)] <- 1
+    consv[, , n] <- as.vector(base + add * scaling[cl, , drop = FALSE])
+  }
+  return(consv)
 }
 
 .extend2luhv2 <- function(x, land = deparse(substitute(x))) {
@@ -206,6 +268,10 @@ if (file.exists(wdpa_hr_file)) {
     message = "Write outputs cell.conservation_land"
   )
 }
+
+# NPI/NDC policies are used in the disaggregation only, cell.conservation_land_0.5.mz is written without them
+land_consv_hr <- .addNpiNdc(land_consv_hr, npi_ndc_ad_hr_file, npi_ndc_aff_hr_file, land_hr_file,
+                            landLr = land_lr, map = readRDS(map_file))
 
 # -------------------------------------------------------------
 # Account for country-specific SNV shares in post-processing
